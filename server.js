@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 
 // Users
 app.get('/api/users', usersController.getUsers);
+app.post('/api/users/register', usersController.register);
 
 
 // ESCUCHAR UN PUERTO
