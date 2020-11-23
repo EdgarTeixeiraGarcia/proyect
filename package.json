@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/EdgarTeixeiraGarcia/proyect/issues"
   },
-  "homepage": "https://github.com/EdgarTeixeiraGarcia/proyect#readme"
+  "homepage": "https://github.com/EdgarTeixeiraGarcia/proyect#readme",
+  "dependencies": {
+    "mysql2": "^2.2.5"
+  }
 }
