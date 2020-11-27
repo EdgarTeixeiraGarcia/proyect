@@ -1,0 +1,20 @@
+FUNCIONES:
+
+-Validar la Authorization
+-Mostrar players
+-Mostrar manager
+-Borrar users
+-Actualizar users
+-Actualizar players
+-Actualizar managers
+-Mostrar contenido multimedia
+-Subir contenido multimedia
+-Borrar contenido multimedia
+-Filtros
+
+
+PREGUNTAS:
+
+- BBDD
+- Correo al registrarse (API)
+- Multimedia en local (fs)

@@ -17,6 +17,13 @@ app.use(bodyParser.json());
 // Users
 app.get('/api/users', usersController.getUsers);
 app.post('/api/users/register', usersController.register);
+app.post('/api/users/login', usersController.login);
+
+// Players
+
+// Managers
+
+// Multimedia Content
 
 
 // ESCUCHAR UN PUERTO

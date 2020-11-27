@@ -47,7 +47,7 @@ async function register(req, res) {
             rol: Joi.string().required(),
         });
 
-        console.log(name,last_name,nif,email,birthdate,password,repeatedPassword,rol);
+        // console.log(name,last_name,nif,email,birthdate,password,repeatedPassword,rol);
         await registerSchema.validateAsync(req.body);
 
         if (password !== repeatedPassword) {
@@ -79,9 +79,60 @@ async function register(req, res) {
     }
 };
 
+// CREAMOS LA FUNCIÓN DE LOGIN
+
+async function login(req, res) {
+    try {
+
+        const { email, password } = req.body;
+
+        const loginSchema = Joi.object({
+            email: Joi.string().email().required(),
+            password: Joi.string().min(6).required(),
+        });
+
+        await loginSchema.validateAsync({ email, password });
+
+        const [ rows ] = await database.pool.query('SELECT * FROM users WHERE email = ?', email);
+
+        if (!rows || ! rows.length) {
+            const err = new Error('No existe un usuario con ese email');
+            err.code = 404;
+            throw err;
+        }
+
+        const user = rows [0];
+
+        const checkPassword = await bcrypt.compare(password, user.password);
+
+        if (!checkPassword) {
+            const err = new Error('La contraseña no es correcta');
+            err.code = 401;
+            throw err;
+        }
+
+        // CREAMOS EL TOKEN
+
+        const tokenPayload = { id: user.id, rol: user.rol};
+
+        const token = jwt.sign(
+            tokenPayload,
+            process.env.JWT_SECRET,
+            { expiresIn: '60d'},
+        );
+
+        res.send ( { token });
+
+    } catch (err) {
+        res.status(err.code || 500);
+        res.send({ error: err.message});
+    }
+}
+
 // EXPORTAMOS LAS FUNCIONES
 
 module.exports = {
     getUsers,
     register,
+    login,
 };
