@@ -1,4 +1,5 @@
-use pruebas;
+use proyecto;
+SET FOREIGN_KEY_CHECKS = 0;
 
 CREATE TABLE IF NOT EXISTS users (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -13,21 +14,47 @@ CREATE TABLE IF NOT EXISTS users (
     rol ENUM('player','manager')
 );
 
+CREATE TABLE IF NOT EXISTS clubs (
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    club_name VARCHAR(300)
+);
+
+CREATE TABLE IF NOT EXISTS skills (
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    skill VARCHAR(100)
+);
+
+CREATE TABLE IF NOT EXISTS countries (
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    country VARCHAR(100)
+    
+);
+
 CREATE TABLE IF NOT EXISTS players (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     height VARCHAR(20),
     weight VARCHAR(20),
-    place_of_birth VARCHAR(50),
-    nationality VARCHAR(50),
-    national_team VARCHAR(50),
-    property_of VARCHAR(80),
-    actual_team VARCHAR(80),
     dominant_leg VARCHAR(20),
-    main_position VARCHAR(20),
-    secundary_position VARCHAR(20),
-    skills VARCHAR(50),
+    main_position ENUM('portero','defensa','centrocampista','delantero'),
+    secundary_position ENUM('portero','lateral_derecho','defensa_central','lateral_izquierdo',
+    'centrocampista_defensivo','medio_izquierdo','medio_derecho','centrocampista_ofensivo',
+    'extremo_izquierdo','extremo_derecho','segundo_delantero','delantero_centro'),
     id_user INT UNSIGNED,
-    FOREIGN KEY (id_user) REFERENCES users(id)
+    FOREIGN KEY (id_user) REFERENCES users(id),
+    property_of INT UNSIGNED,
+    FOREIGN KEY (property_of) REFERENCES clubs(id),
+    actual_team INT UNSIGNED,
+    FOREIGN KEY (actual_team) REFERENCES clubs(id),
+    country INT UNSIGNED,
+    FOREIGN KEY (country) REFERENCES countries(id)
+);
+
+CREATE TABLE IF NOT EXISTS players_skills(
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    id_player INT UNSIGNED,
+    FOREIGN KEY (id_player) REFERENCES players(id),
+    id_skill INT UNSIGNED,
+    FOREIGN KEY (id_skill) REFERENCES skills(id)
 );
 
 CREATE TABLE IF NOT EXISTS managers (
@@ -59,10 +86,4 @@ CREATE TABLE IF NOT EXISTS multimedia_contents (
     id_player INT UNSIGNED,
     FOREIGN KEY (id_player) REFERENCES players(id)
 );
-
-CREATE TABLE IF NOT EXISTS skills (
-	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    skill VARCHAR(100),
-    id_player INT UNSIGNED,
-    FOREIGN KEY (id_player) REFERENCES players(id)
-);
+SET FOREIGN_KEY_CHECKS = 1;

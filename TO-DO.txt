@@ -1,5 +1,6 @@
 FUNCIONES:
 
+-Creacion del token
 -Validar la Authorization
 -Mostrar players
 -Mostrar manager
@@ -13,8 +14,13 @@ FUNCIONES:
 -Filtros
 
 
+MODIFICACIONES
+
+- BBDD
+-- FK SKill
+
 PREGUNTAS:
 
 - BBDD
-- Correo al registrarse (API)
-- Multimedia en local (fs)
+- Correo al registrarse (API) sendgrid
+- Multimedia en local (fs) (cloudyinary)
