@@ -6,6 +6,9 @@ const {
     usersController,
 } = require('./controllers');
 
+const { validateAuthorization } = require ('./middlewares');
+// const { updateUser } = require('./controllers/users-controller');
+
 const { HTTP_PORT } = process.env;
 
 const app = express();
@@ -18,8 +21,11 @@ app.use(bodyParser.json());
 app.get('/api/users', usersController.getUsers);
 app.post('/api/users/register', usersController.register);
 app.post('/api/users/login', usersController.login);
+app.put('/api/user/update', validateAuthorization, usersController.updateUser)
 
 // Players
+
+// app.put('/api/players/:playerId', validateAuthorization,)
 
 // Managers
 
