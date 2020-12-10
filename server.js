@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const {
     usersController,
+    playersController,
 } = require('./controllers');
 
 const { validateAuthorization } = require ('./middlewares');
@@ -25,7 +26,8 @@ app.put('/api/user/update', validateAuthorization, usersController.updateUser)
 
 // Players
 
-// app.put('/api/players/:playerId', validateAuthorization,)
+app.put('/api/player/update', validateAuthorization, playersController.updatePlayer)
+app.get('/api/playerskills',  validateAuthorization, playersController.insertPlayerSkill)
 
 // Managers
 
