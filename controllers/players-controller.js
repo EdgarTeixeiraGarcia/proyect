@@ -47,7 +47,7 @@ async function insertPlayerSkill (req, res) {
     try {
 
         const { id } = req.auth;
-        const skill = req.body;
+        const { skill } = req.body;
 
         const [ player ] = await database.pool.query('SELECT id FROM players WHERE id_user = ?', id);
 
@@ -57,7 +57,14 @@ async function insertPlayerSkill (req, res) {
             throw err;
         }
 
-        console.log(player[0].id)
+        const [ skills ] = await database.pool.query('SELECT id FROM skills WHERE skill = ?', skill);
+
+        console.log(player[0].id, skills[0].id)
+
+        await database.pool.query('INSERT INTO players_skills (id_player, id_skill) VALUES ( ?, ? )', [player[0].id, skills[0].id] )
+
+        res.status(200);
+        res.send();
     }
 
     catch (err) {

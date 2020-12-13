@@ -30,12 +30,13 @@ app.put('/api/user/update', validateAuthorization, usersController.updateUser)
 // Players
 
 app.put('/api/player/update', validateAuthorization, playersController.updatePlayer)
-app.get('/api/playerskills',  validateAuthorization, playersController.insertPlayerSkill)
+//app.get('/api/playerskills',  validateAuthorization, playersController.getPlayerSkill)
 
 // Managers
 
 // Skills
 app.get('/api/skills', skillsController.getSkills)
+app.post('/api/player/insertskill', validateAuthorization, playersController.insertPlayerSkill)
 
 // Countries
 app.get('/api/countries', countriesController.getCountries)
@@ -44,6 +45,10 @@ app.get('/api/countries', countriesController.getCountries)
 app.get('/api/clubs', clubsController.getClubs)
 
 // Multimedia Content
+
+
+// Filtros
+
 
 // ESCUCHAR UN PUERTO
 app.listen(HTTP_PORT, () => console.log(`Listening at port ${HTTP_PORT}`));
