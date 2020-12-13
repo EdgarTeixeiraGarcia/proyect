@@ -3,7 +3,6 @@ const bcrypt = require ('bcryptjs');
 const jwt = require ('jsonwebtoken');
 
 const { database } = require('../infrastructure');
-const { string } = require('joi');
 
 // CREAMOS LA FUNCIÓN PARA OBTENER LOS USUARIOS DE LA BBDD
 

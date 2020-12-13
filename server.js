@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 const {
     usersController,
     playersController,
+    skillsController,
+    countriesController,
+    clubsController,
 } = require('./controllers');
 
 const { validateAuthorization } = require ('./middlewares');
@@ -31,8 +34,16 @@ app.get('/api/playerskills',  validateAuthorization, playersController.insertPla
 
 // Managers
 
-// Multimedia Content
+// Skills
+app.get('/api/skills', skillsController.getSkills)
 
+// Countries
+app.get('/api/countries', countriesController.getCountries)
+
+// Clubs
+app.get('/api/clubs', clubsController.getClubs)
+
+// Multimedia Content
 
 // ESCUCHAR UN PUERTO
 app.listen(HTTP_PORT, () => console.log(`Listening at port ${HTTP_PORT}`));
