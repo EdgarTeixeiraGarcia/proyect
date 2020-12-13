@@ -73,7 +73,62 @@ async function insertPlayerSkill (req, res) {
     }
 }
 
+async function updateActualClub (req, res) {
+    try {
+
+        const { id } = req.auth;
+        const { club } = req.body;
+
+        const [ player ] = await database.pool.query('SELECT id FROM players WHERE id_user = ?', id);
+
+        if (!player || ! player.length) {
+            const err = new Error('No existe el jugador');
+            err.code = 404;
+            throw err;
+        }
+
+        const [ clubs ] = await database.pool.query('SELECT id FROM clubs WHERE club_name = ?', club);
+
+        console.log(player[0].id, clubs[0].id)
+
+        await database.pool.query('UPDATE players SET actual_team = ? WHERE id = ?', [ clubs[0].id, player[0].id ])
+
+    } catch (err) {
+        res.status(err.httpCode || 500);
+        res.send({ error: err.message});
+    }
+}
+
+
+async function updatePropertyClub (req, res) {
+    try {
+
+        const { id } = req.auth;
+        const { club } = req.body;
+
+        const [ player ] = await database.pool.query('SELECT id FROM players WHERE id_user = ?', id);
+
+        if (!player || ! player.length) {
+            const err = new Error('No existe el jugador');
+            err.code = 404;
+            throw err;
+        }
+
+        const [ clubs ] = await database.pool.query('SELECT id FROM clubs WHERE club_name = ?', club);
+
+        console.log(player[0].id, clubs[0].id)
+
+        await database.pool.query('UPDATE players SET property_of = ? WHERE id = ?', [ clubs[0].id, player[0].id ])
+
+    } catch (err) {
+        res.status(err.httpCode || 500);
+        res.send({ error: err.message});
+    }
+}
+
 module.exports = {
     updatePlayer,
     insertPlayerSkill,
+    updateActualClub,
+    updatePropertyClub,
 }

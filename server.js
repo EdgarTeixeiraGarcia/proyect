@@ -30,7 +30,8 @@ app.put('/api/user/update', validateAuthorization, usersController.updateUser)
 // Players
 
 app.put('/api/player/update', validateAuthorization, playersController.updatePlayer)
-//app.get('/api/playerskills',  validateAuthorization, playersController.getPlayerSkill)
+app.put('/api/player/updateActualClub', validateAuthorization, playersController.updateActualClub)
+app.put('/api/player/updatePropertyClub', validateAuthorization, playersController.updatePropertyClub)
 
 // Managers
 
