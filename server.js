@@ -11,6 +11,7 @@ const {
 } = require('./controllers');
 
 const { validateAuthorization } = require ('./middlewares');
+const filtersController = require('./controllers/filters-controller');
 // const { updateUser } = require('./controllers/users-controller');
 
 const { HTTP_PORT } = process.env;
@@ -49,6 +50,7 @@ app.get('/api/clubs', clubsController.getClubs)
 
 
 // Filtros
+app.get('/api/playersByClub', filtersController.filterByClub)
 
 
 // ESCUCHAR UN PUERTO

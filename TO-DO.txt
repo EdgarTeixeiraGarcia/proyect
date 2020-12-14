@@ -16,8 +16,9 @@ FUNCIONES:
 
 MODIFICACIONES
 
-- BBDD
--- FK SKill
+--- BBDD ----
+- cambiar relacion paises
+- Añadir el ON DELETE CASCADE a las FK
 
 PREGUNTAS:
 
