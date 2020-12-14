@@ -51,6 +51,7 @@ app.get('/api/clubs', clubsController.getClubs)
 
 // Filtros
 app.get('/api/playersByClub', filtersController.filterByClub)
+app.get('/api/playersBySkill', filtersController.filterBySkill)
 
 
 // ESCUCHAR UN PUERTO
