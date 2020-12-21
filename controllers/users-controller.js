@@ -229,6 +229,33 @@ async function updateUser(req, res) {
     }
 }
 
+async function deleteUser(req, res) {
+
+    try {
+
+        const { id } = req.auth;
+
+        const [ user ] = await database.pool.query('SELECT * FROM users WHERE id = ?', id);
+
+        if (!user || ! user.length) {
+            const err = new Error('No existe el usuario');
+            err.code = 404;
+            throw err;
+        }
+
+        const deleteQuery = 'DELETE FROM users WHERE id = ?';
+        await database.pool.query(deleteQuery, id);
+
+        res.status(200);
+        res.send('Usuario eliminado correctamente')
+
+    } catch(err) {
+
+        res.status(err.httpCode || 500);
+        res.send({ error: err.message});
+    }
+}
+
 // EXPORTAMOS LAS FUNCIONES
 
 module.exports = {
@@ -236,4 +263,5 @@ module.exports = {
     register,
     login,
     updateUser,
+    deleteUser,
 };

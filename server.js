@@ -26,7 +26,8 @@ app.use(bodyParser.json());
 app.get('/api/users', usersController.getUsers);
 app.post('/api/users/register', usersController.register);
 app.post('/api/users/login', usersController.login);
-app.put('/api/user/update', validateAuthorization, usersController.updateUser)
+app.put('/api/user/update', validateAuthorization, usersController.updateUser);
+app.delete('/api/users/delete', validateAuthorization, usersController.deleteUser);
 
 // Players
 
@@ -52,6 +53,7 @@ app.get('/api/clubs', clubsController.getClubs)
 // Filtros
 app.get('/api/playersByClub', filtersController.filterByClub)
 app.get('/api/playersBySkill', filtersController.filterBySkill)
+app.get('/api/playersByPosition', filtersController.filterByPosition)
 
 
 // ESCUCHAR UN PUERTO

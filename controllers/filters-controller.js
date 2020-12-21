@@ -42,7 +42,27 @@ async function filterBySkill (req, res) {
     }
 }
 
+async function filterByPosition (req, res) {
+    try {
+
+        const { position } = req.body;
+
+        const [ players ] = await database.pool.query('SELECT * FROM players WHERE main_position = ?', position)
+
+        console.log(position)
+ 
+        res.status(200);
+        res.send(players);
+
+    } catch (err) {
+
+        res.status(500);
+        res.send({ error: err.message})
+    }
+}
+
 module.exports = {
     filterByClub,
     filterBySkill,
+    filterByPosition,
 }

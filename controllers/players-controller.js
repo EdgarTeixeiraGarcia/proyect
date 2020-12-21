@@ -9,7 +9,6 @@ async function updatePlayer(req, res) {
 
         const {
             height,
-            weight,
             dominant_leg,
             main_position,
             secundary_position,
@@ -26,8 +25,8 @@ async function updatePlayer(req, res) {
             throw err;
         }
 
-        const updateUserQuery = 'UPDATE players SET height = ?, weight = ?, dominant_leg = ?, main_position = ?, secundary_position= ? WHERE id_user= ?'
-        await database.pool.query(updateUserQuery, [height, weight, dominant_leg, main_position, secundary_position, id])
+        const updateUserQuery = 'UPDATE players SET height = ?, dominant_leg = ?, main_position = ?, secundary_position= ? WHERE id_user= ?'
+        await database.pool.query(updateUserQuery, [height, dominant_leg, main_position, secundary_position, id])
         
 
         res.status(200);
@@ -93,6 +92,9 @@ async function updateActualClub (req, res) {
 
         await database.pool.query('UPDATE players SET actual_team = ? WHERE id = ?', [ clubs[0].id, player[0].id ])
 
+        res.status(200);
+        res.send();
+
     } catch (err) {
         res.status(err.httpCode || 500);
         res.send({ error: err.message});
@@ -119,6 +121,9 @@ async function updatePropertyClub (req, res) {
         console.log(player[0].id, clubs[0].id)
 
         await database.pool.query('UPDATE players SET property_of = ? WHERE id = ?', [ clubs[0].id, player[0].id ])
+
+        res.status(200);
+        res.send();
 
     } catch (err) {
         res.status(err.httpCode || 500);

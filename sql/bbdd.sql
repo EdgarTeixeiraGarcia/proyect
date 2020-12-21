@@ -11,7 +11,9 @@ CREATE TABLE IF NOT EXISTS users (
     birthdate DATE NOT NULL,
     phone VARCHAR(50),
     perfil_photo VARCHAR(200),
-    rol ENUM('player','manager')
+    rol ENUM('player','manager'),
+    country INT UNSIGNED,
+    FOREIGN KEY (country) REFERENCES countries(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS clubs (
@@ -33,35 +35,34 @@ CREATE TABLE IF NOT EXISTS countries (
 CREATE TABLE IF NOT EXISTS players (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     height VARCHAR(20),
-    weight VARCHAR(20),
     dominant_leg VARCHAR(20),
-    main_position ENUM('portero','defensa','centrocampista','delantero'),
+    main_position ENUM('portero','lateral_derecho','defensa_central','lateral_izquierdo',
+    'centrocampista_defensivo','medio_izquierdo','medio_derecho','centrocampista_ofensivo',
+    'extremo_izquierdo','extremo_derecho','segundo_delantero','delantero_centro'),
     secundary_position ENUM('portero','lateral_derecho','defensa_central','lateral_izquierdo',
     'centrocampista_defensivo','medio_izquierdo','medio_derecho','centrocampista_ofensivo',
     'extremo_izquierdo','extremo_derecho','segundo_delantero','delantero_centro'),
     id_user INT UNSIGNED,
-    FOREIGN KEY (id_user) REFERENCES users(id),
+    FOREIGN KEY (id_user) REFERENCES users(id) ON DELETE CASCADE,
     property_of INT UNSIGNED,
-    FOREIGN KEY (property_of) REFERENCES clubs(id),
+    FOREIGN KEY (property_of) REFERENCES clubs(id) ON DELETE CASCADE,
     actual_team INT UNSIGNED,
-    FOREIGN KEY (actual_team) REFERENCES clubs(id),
-    country INT UNSIGNED,
-    FOREIGN KEY (country) REFERENCES countries(id)
+    FOREIGN KEY (actual_team) REFERENCES clubs(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS players_skills(
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     id_player INT UNSIGNED,
-    FOREIGN KEY (id_player) REFERENCES players(id),
+    FOREIGN KEY (id_player) REFERENCES players(id) ON DELETE CASCADE,
     id_skill INT UNSIGNED,
-    FOREIGN KEY (id_skill) REFERENCES skills(id)
+    FOREIGN KEY (id_skill) REFERENCES skills(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS managers (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     agency VARCHAR(100),
     id_user INT UNSIGNED,
-    FOREIGN KEY (id_user) REFERENCES users(id)
+    FOREIGN KEY (id_user) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS players_managers (
@@ -71,9 +72,9 @@ CREATE TABLE IF NOT EXISTS players_managers (
     offer BOOLEAN DEFAULT FALSE,
     date_of_offer DATE,
     id_player INT UNSIGNED,
-    FOREIGN KEY (id_player) REFERENCES players(id),
+    FOREIGN KEY (id_player) REFERENCES players(id) ON DELETE CASCADE,
     id_manager INT UNSIGNED,
-    FOREIGN KEY (id_manager) REFERENCES managers(id)
+    FOREIGN KEY (id_manager) REFERENCES managers(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS multimedia_contents (
@@ -84,6 +85,6 @@ CREATE TABLE IF NOT EXISTS multimedia_contents (
     content VARCHAR(400),
     type VARCHAR(50),
     id_player INT UNSIGNED,
-    FOREIGN KEY (id_player) REFERENCES players(id)
+    FOREIGN KEY (id_player) REFERENCES players(id) ON DELETE CASCADE
 );
 SET FOREIGN_KEY_CHECKS = 1;

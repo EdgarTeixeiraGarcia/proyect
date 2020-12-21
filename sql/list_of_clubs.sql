@@ -1,3 +1,5 @@
+use proyecto;
+
 INSERT INTO clubs (club_name) VALUES ('Real Madrid');
 INSERT INTO clubs (club_name) VALUES ('Barcelona');
 INSERT INTO clubs (club_name) VALUES ('Atlético de Madrid');

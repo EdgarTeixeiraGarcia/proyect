@@ -1,3 +1,5 @@
+use proyecto;
+
 INSERT INTO skills (skill) VALUES ('Reflejos');
 INSERT INTO skills (skill) VALUES ('Salida por alto');
 INSERT INTO skills (skill) VALUES ('Ambidiestro');
