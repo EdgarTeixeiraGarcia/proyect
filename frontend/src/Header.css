@@ -1,0 +1,16 @@
+.Header {
+    background-color: gray;
+    display: flex;
+    flex-direction: row;
+    height: 8rem;
+    align-content: center;
+}
+
+.logo {
+    background-color: teal;
+    text-align: center;
+}
+
+.title {
+    flex-grow: 1;
+}

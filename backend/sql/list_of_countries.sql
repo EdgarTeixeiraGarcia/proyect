@@ -1,0 +1,20 @@
+use proyecto;
+
+INSERT INTO countries (country) VALUES('España');
+INSERT INTO countries (country) VALUES('Inglaterra');
+INSERT INTO countries (country) VALUES('Brasil');
+INSERT INTO countries (country) VALUES('Francia');
+INSERT INTO countries (country) VALUES('Italia');
+INSERT INTO countries (country) VALUES('Estados Unidos');
+INSERT INTO countries (country) VALUES('Rusia');
+INSERT INTO countries (country) VALUES('Alemania');
+INSERT INTO countries (country) VALUES('Argentina');
+INSERT INTO countries (country) VALUES('Croacia');
+INSERT INTO countries (country) VALUES('Noruega');
+INSERT INTO countries (country) VALUES('Japón');
+INSERT INTO countries (country) VALUES('Polonia');
+INSERT INTO countries (country) VALUES('Escocia');
+INSERT INTO countries (country) VALUES('Suiza');
+INSERT INTO countries (country) VALUES('Belgica');
+INSERT INTO countries (country) VALUES('Canada');
+INSERT INTO countries (country) VALUES('Finlandia');
