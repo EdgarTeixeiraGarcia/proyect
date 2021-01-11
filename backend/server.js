@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const multer = require('multer');
 
 const {
     usersController,
@@ -8,26 +10,34 @@ const {
     skillsController,
     countriesController,
     clubsController,
+    multimediaController,
 } = require('./controllers');
 
 const { validateAuthorization } = require ('./middlewares');
 const filtersController = require('./controllers/filters-controller');
 // const { updateUser } = require('./controllers/users-controller');
 
+const upload = multer()
+
 const { HTTP_PORT } = process.env;
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 
 // ENDPOINTS
 
 // Users
 app.get('/api/users', usersController.getUsers);
+app.get('/api/users/me', validateAuthorization, usersController.getMe);
 app.post('/api/users/register', usersController.register);
 app.post('/api/users/login', usersController.login);
 app.put('/api/user/update', validateAuthorization, usersController.updateUser);
+app.put('/api/users/insertCountry', validateAuthorization, usersController.insertCountry)
+// app.put('/api/user/update', validateAuthorization, upload.single('perfil_photo'), usersController.updateUser);
 app.delete('/api/users/delete', validateAuthorization, usersController.deleteUser);
+app.get('/api/users/:userId', usersController.getUserData);
 
 // Players
 
@@ -48,12 +58,17 @@ app.get('/api/countries', countriesController.getCountries)
 app.get('/api/clubs', clubsController.getClubs)
 
 // Multimedia Content
-
+app.get('/api/multimedia/meVideos', validateAuthorization, multimediaController.getMeVideos)
+app.get('/api/multimedia/videos/:playerId', multimediaController.getPlayerVideosById)
+app.put('/api/videos/upload', validateAuthorization, multimediaController.uploadVideo)
 
 // Filtros
 app.get('/api/playersByClub', filtersController.filterByClub)
 app.get('/api/playersBySkill', filtersController.filterBySkill)
-app.get('/api/playersByPosition', filtersController.filterByPosition)
+app.get('/api/players/filterByPosition', filtersController.filterByPosition)
+
+//Ficheros estáticos de la carpeta uploads
+app.use('/static', express.static('uploads'))
 
 
 // ESCUCHAR UN PUERTO

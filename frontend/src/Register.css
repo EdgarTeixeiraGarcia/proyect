@@ -30,8 +30,15 @@ label {
     display: block;
 }
 
-.email {
-    width: 100%;
+.countries-list {
+    display: flex;
+    margin-top: 14px;
+    height: 2.5rem;
+    width: 20rem;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    background-color: white;
+    border: 1px solid black;
 }
 
 .tipo_cuenta {

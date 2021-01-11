@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSetUser, useUser } from './UserContext';
 import './Profile.css';
-import { useMeData } from './api';
+import { useMeData, meVideos } from './api';
 
 
 function Profile() {
@@ -23,32 +23,36 @@ function Profile() {
                 <input name="foto" type="file" accept="image/"></input>
                </div> */}
             </label>
-            <div className="personal_data">Datos Personales
-               <label>Nombre:
-                   <span>{me.name}</span>
-               </label>
-               <label>Apellidos:
-                   <span>{me.last_name}</span>
-               </label>
-               <label>NIF:
-                   <span>{me.nif}</span>
-               </label>
-               <label>Email:
-                   <span>{me.email}</span>
-               </label>
-               <label>Fecha de Nacimiento:
-                   <span>{me.birthdate}</span>
-               </label>
-               <label>Edad:
-                   <span>calcularlo</span>
-               </label>
-               <label>Teléfono:
-                   <span>{me.phone}</span>
-               </label>
-               <label>País:
-                   <span>{me.country}</span>
-               </label>
-            </div>
+            <form>
+                <div className="personal_data">Datos Personales
+                <label>Nombre:
+                    <span>{me.name}</span>
+                </label>
+                <label>Apellidos:
+                    <span>{me.last_name}</span>
+                </label>
+                <label>NIF:
+                    <span>{me.nif}</span>
+                </label>
+                <label>Email:
+                    <span>{me.email}</span>
+                </label>
+                <label>Fecha de Nacimiento:
+                    <span>{me.birthdate}</span>
+                </label>
+                <label>Edad:
+                    <span>{me.age}</span>
+                </label>
+                <label>Teléfono:
+                    <span>{me.phone}</span>
+                </label>
+                <label>País:
+                    <span>{me.country}</span>
+                </label>
+                <button>Actualizar datos personales</button>
+                </div>
+                
+            </form>
             <div className="ficha_tecnica">Ficha Técnica
                <label>Altura:
                    <span></span>

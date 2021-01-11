@@ -3,6 +3,8 @@ import useFetch from './useFetch'
 export const useUserList = () => useFetch('http://localhost:8080/api/users')
 export const useClubsList = () => useFetch('http://localhost:8080/api/clubs')
 export const useSkillsList = () => useFetch('http://localhost:8080/api/skills')
+export const useCountriesList = () => useFetch('http://localhost:8080/api/countries')
+export const useUsersFilterList = (position) => useFetch('http://localhost:8080/api/players/filterByPosition')
 // export const useUserById = (id) => useFetch('http://localhost:8080/users/' + id)
 
 export const login = async (email, password) => {
@@ -15,11 +17,11 @@ export const login = async (email, password) => {
     return data
 }
 
-export const register = async (name, last_name, nif, email, birthdate, password, repeatedPassword, rol) => {
+export const register = async (name, last_name, nif, email, birthdate, password, repeatedPassword, rol, country) => {
     const ret = await fetch('http://localhost:8080/api/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify({ name, last_name, nif, email, birthdate, password, repeatedPassword, rol})
+        body: JSON.stringify({ name, last_name, nif, email, birthdate, password, repeatedPassword, rol, country})
     })
     const data = await ret.json()
     return data
@@ -49,9 +51,10 @@ export const useMeData = async (token, phone, perfil_photo)  => {
 //     return data
 // }
 
-export const meVideos = async () => {
+export const meVideos = async (token) => {
     const ret = await fetch('http://localhost:8080/api/multimedia/meVideos', {
-        method: 'GET'
+        method: 'GET',
+        headers: { 'Authorization': 'Bearer ' + token},
     })
     const data = await ret.json()
     return data

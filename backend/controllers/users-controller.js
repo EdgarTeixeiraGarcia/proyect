@@ -1,10 +1,39 @@
-const Joi = require ('joi');
-const bcrypt = require ('bcryptjs');
-const jwt = require ('jsonwebtoken');
+const Joi = require('joi');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
+const uuid = require('uuid');
+const sgMail = require('@sendgrid/mail');
 
 const { database } = require('../infrastructure');
 
 // CREAMOS LA FUNCIÓN PARA OBTENER LOS USUARIOS DE LA BBDD
+
+// async function sendEmail ({ email, title, content}) {
+
+//     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    
+//     try {
+
+//         sgMail.send({
+//             to: email,
+//             from: 'edgar_wiman5@hotmail.com',
+//             subject: title,
+//             text: content,
+//             html: `<div>
+//                 <h1>Bienvenido a Nombre pagina</h1>
+//                 <p>${content}</p>
+//             </div>`
+//         });
+
+//     } catch(err) {
+        
+//         res.status(500);
+//         res.send({ error: err.message});
+//     }
+    
+// }
 
 async function getUsers(req, res) {
     try {
@@ -14,6 +43,35 @@ async function getUsers(req, res) {
 
     } catch (err) {
 
+        res.status(500);
+        res.send({ error: err.message});
+    }
+};
+
+
+async function getMe(req, res) {
+    try {
+
+        const { id } = req.auth;
+
+        const [ me ] = await database.pool.query('SELECT * FROM users where id = ?', id);
+
+        if (!me || ! me.length) {
+            const err = new Error('No existe el usuario');
+            err.code = 404;
+            throw err;
+        }
+
+        // sendEmail({
+        //     email: 'edgar_wiman5@hotmail.com',
+        //     title: 'Bienvenido a Nombre de la pagina',
+        //     content: 'Gracias por confiar en nosotros'
+        // });
+
+        res.send(me);
+
+    } catch (err) {
+        console.log(err)
         res.status(500);
         res.send({ error: err.message});
     }
@@ -33,6 +91,7 @@ async function register(req, res) {
             password,
             repeatedPassword,
             rol,
+            country,
         } = req.body;
 
         const registerSchema = Joi.object ({
@@ -44,6 +103,7 @@ async function register(req, res) {
             password: Joi.string().min(6).required(),
             repeatedPassword: Joi.string().min(6).required(),
             rol: Joi.string().required(),
+            country: Joi.string().required(),
         });
 
         // console.log(name,last_name,nif,email,birthdate,password,repeatedPassword,rol);
@@ -83,6 +143,10 @@ async function register(req, res) {
         const insertQuery = 'INSERT INTO users (name, last_name, nif, email, password, birthdate, rol) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
         await database.pool.query(insertQuery, [name, last_name, nif, email, passwordHash, birthdate, rol]);
+
+        const  [ userId ] = await database.pool.query( 'SELECT id FROM users WHERE email = ?', email);
+
+        await database.pool.query('UPDATE users SET country = ? WHERE id = ?', [ country, userId[0].id ] )
 
         if(rol === 'player') {
 
@@ -126,8 +190,27 @@ async function register(req, res) {
             
         }
 
+        const [ user ] = await database.pool.query('SELECT u.*,c.country FROM users u JOIN countries c ON u.country = c.id WHERE u.email = ?', email)
+
+        // sendEmail({
+        //     email: email,
+        //     title: 'Bienvenido a Nombre de la pagina',
+        //     content: 'Gracias por confiar en nosotros'
+        // });
+
+        const tokenPayload = { id: user.id, rol: user.rol};
+
+        const token = jwt.sign(
+            tokenPayload,
+            process.env.JWT_SECRET,
+            { expiresIn: '14d'},
+        );
+
         res.status(201);
-        res.send();
+        res.send ({ 
+            token,
+            user: { ...user[0]}
+         });
 
     } catch (err) {
         res.status(err.code || 500);
@@ -140,6 +223,8 @@ async function register(req, res) {
 async function login(req, res) {
     try {
 
+        console.log('Hubo un intento de login')
+
         const { email, password } = req.body;
 
         const loginSchema = Joi.object({
@@ -149,7 +234,12 @@ async function login(req, res) {
 
         await loginSchema.validateAsync({ email, password });
 
-        const [ rows ] = await database.pool.query('SELECT * FROM users WHERE email = ?', email);
+        // const [ rows ] = await database.pool.query('SELECT u.*,c.country FROM users u JOIN countries c ON u.country = c.id WHERE u.email = ?', email);
+
+        const [ rows ] = await database.pool.query(`
+        SELECT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+        FROM users u JOIN countries c ON u.country = c.id 
+        WHERE u.email = ?`, email);
 
         if (!rows || ! rows.length) {
             const err = new Error('No existe un usuario con ese email');
@@ -177,7 +267,12 @@ async function login(req, res) {
             { expiresIn: '14d'},
         );
 
-        res.send ( { token });
+
+        res.send ({ 
+            token,
+            user: { ...user}
+         });
+        
 
     } catch (err) {
         res.status(err.code || 500);
@@ -192,15 +287,8 @@ async function updateUser(req, res) {
     try {
 
         const {
-            name,
-            last_name,
-            nif,
-            email,
-            password,
-            birthdate,
             phone,
             perfil_photo,
-            rol
         } = req.body;
 
         const { id } = req.auth;
@@ -213,12 +301,18 @@ async function updateUser(req, res) {
             throw err;
         }
 
-        const updateUserQuery = 'UPDATE users SET name = ? , last_name = ?, nif = ?, email = ?,password = ?, birthdate = ?, phone = ?, perfil_photo = ?, rol = ? WHERE id= ?'
-        await database.pool.query(updateUserQuery, [name, last_name, nif, email, password, birthdate, phone, perfil_photo, rol, id])
+        const updateUserQuery = 'UPDATE users SET phone = ?, perfil_photo = ? WHERE id= ?'
+        await database.pool.query(updateUserQuery, [phone, perfil_photo, id])
+
+        const [ userUpdated ] =  await database.pool.query('SELECT * FROM users WHERE id = ?', id)
         
+        // if (req.file) {
+        //     fs.writeFileSync(path.join('uploads', 'user-' + id + '.jpg'), req.file.buffer)
+        //     user.perfil_photo = 'http://localhost:8080/static/user' + id + '.jpg'
+        // }
 
         res.status(200);
-        res.send();
+        res.send(userUpdated[0]);
     }
     
     
@@ -228,6 +322,37 @@ async function updateUser(req, res) {
         res.send({ error: err.message});
     }
 }
+
+async function insertCountry (req, res) {
+    try {
+
+        const { id } = req.auth;
+        const { country } = req.body;
+
+        const [ user ] = await database.pool.query('SELECT * FROM users WHERE id = ?', id);
+
+        if (!user || ! user.length) {
+            const err = new Error('No existe el usuario');
+            err.code = 404;
+            throw err;
+        }
+
+        const [ countryId ] = await database.pool.query('SELECT id FROM countries WHERE country = ?', country);
+
+        await database.pool.query('UPDATE users SET country = ? WHERE id = ?', [ countryId[0].id, user[0].id ])
+
+        const [ usuario ] = await database.pool.query('SELECT u.*,c.country FROM users u JOIN countries c ON u.country = c.id WHERE u.id = ?', id)
+
+        res.status(200);
+        res.send(usuario);
+
+    } catch (err) {
+        res.status(err.httpCode || 500);
+        res.send({ error: err.message });
+    }
+}
+
+// CREAMOS LA FUNCIÓN BORRAR USUARIO
 
 async function deleteUser(req, res) {
 
@@ -256,12 +381,56 @@ async function deleteUser(req, res) {
     }
 }
 
+// CREAMOS LA FUNCION PARA OBTENER LOS DATOS DEL USUARIO
+
+async function getUserData (req, res) {
+    try {
+        
+        const { userId } = req.params;
+
+        const [ userClub ] = await database.pool.query(`
+        SELECT u.*,c.country,cl_actual.club_name,cl_propiedad.club_name
+        FROM users u 
+        LEFT JOIN countries c ON u.country = c.id 
+        JOIN players p ON u.id = p.id_user
+        LEFT JOIN clubs cl_actual ON cl_actual.id = p.actual_team
+        LEFT JOIN clubs cl_propiedad ON cl_propiedad.id = p.property_of
+        WHERE u.id = ? `, userId);
+
+        const [ userSkills ] = await database.pool.query(`
+        SELECT u.*,s.skill
+        FROM users u 
+        JOIN players p ON u.id = p.id_user
+        JOIN players_skills ps ON p.id = ps.id_player
+        JOIN skills s ON s.id = ps.id_skill
+        WHERE u.id = ?;`, userId)
+
+        const [ userMultimedia ] = await database.pool.query(`
+        SELECT u.*,mc.*
+        FROM users u 
+        JOIN players p ON u.id = p.id_user
+        JOIN multimedia_contents mc ON p.id = mc.id_player
+        WHERE u.id = ?;`, userId)
+
+        res.status(200);
+        res.send(userMultimedia);
+
+    }catch(err) {
+
+        res.status(err.httpCode || 500);
+        res.send({ error: err.message});
+    }
+}
+
 // EXPORTAMOS LAS FUNCIONES
 
 module.exports = {
     getUsers,
+    getMe,
     register,
     login,
     updateUser,
     deleteUser,
+    insertCountry,
+    getUserData,
 };

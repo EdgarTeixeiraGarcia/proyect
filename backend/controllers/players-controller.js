@@ -30,7 +30,7 @@ async function updatePlayer(req, res) {
         
 
         res.status(200);
-        res.send();
+        res.send(player[0]);
     }
     
     

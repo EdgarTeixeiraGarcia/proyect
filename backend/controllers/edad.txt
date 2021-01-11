@@ -1,0 +1,24 @@
+SELECT *, YEAR(CURDATE()) -
+YEAR(birthdate) -
+IF(STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(birthdate), '-', DAY(birthdate)) ,'%Y-%c-%e') > CURDATE(), 1, 0)
+AS age FROM users;
+
+SELECT TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age from users
+
+SELECT u.*,c.country,cl_actual.club_name,cl_propiedad.club_name
+FROM users u 
+LEFT JOIN countries c ON u.country = c.id 
+JOIN players p ON u.id = p.id_user
+LEFT JOIN clubs cl_actual ON cl_actual.id = p.actual_team
+LEFT JOIN clubs cl_propiedad ON cl_propiedad.id = p.property_of; 
+
+SELECT u.*,s.skill
+FROM users u 
+JOIN players p ON u.id = p.id_user
+JOIN players_skills ps ON p.id = ps.id_player
+JOIN skills s ON s.id = ps.id_skill;
+
+SELECT u.*,mc.*
+FROM users u 
+JOIN players p ON u.id = p.id_user
+JOIN multimedia_contents mc ON p.id = mc.id_player

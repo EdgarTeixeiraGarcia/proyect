@@ -5,7 +5,7 @@ const { database } = require('../infrastructure');
 async function getCountries (req, res) {
     try {
 
-        const [ countries ] = await database.pool.query('SELECT * FROM countries');
+        const [ countries ] = await database.pool.query('SELECT * FROM countries ORDER BY country ASC');
         res.send(countries);
 
     }catch (err) {

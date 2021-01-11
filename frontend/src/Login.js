@@ -37,7 +37,9 @@ function Login() {
                         Email o Contraseña incorrecto
                     </div>
                 }
-                <button className="iniciar_sesion" type="submit">Iniciar sesión</button>
+                <button className="iniciar_sesion" type="submit">Iniciar sesión
+                <Link to="/"></Link>
+                </button>
                 <div className="separator"></div>
                 <Link to="/register" className="nueva_cuenta">Crear cuenta nueva</Link>
             </form>

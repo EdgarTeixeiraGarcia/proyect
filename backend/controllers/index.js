@@ -4,6 +4,7 @@ const skillsController = require('./skills-controller');
 const countriesController = require('./countries-controller');
 const clubsController = require('./clubs-controller');
 const filtersController = require('./filters-controller');
+const multimediaController = require('./multimedia-content-controller')
 
 
 module.exports = {
@@ -13,4 +14,5 @@ module.exports = {
     countriesController,
     clubsController,
     filtersController,
+    multimediaController,
 }

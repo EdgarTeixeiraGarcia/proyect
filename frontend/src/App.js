@@ -6,7 +6,7 @@ import Register from './Register';
 import Profile from './Profile';
 import { Switch, Route, Link } from 'react-router-dom';
 import { useUser } from './UserContext';
-import { useClubsList, useSkillsList } from './api';
+import { useClubsList, useSkillsList, useUsersFilterList } from './api';
 
 
 function App() {
@@ -15,6 +15,10 @@ function App() {
   
   const clubs = useClubsList()
   const skills = useSkillsList()
+  const usersSkills = useUsersFilterList()
+  // const filters = new URLSearchParams(window.location.search)
+
+  // console.log(filters.get('club'))
 
   return (
     <div className="App">
@@ -40,9 +44,9 @@ function App() {
               <h3>Filtros</h3>
               <h4 className="filter_name">CLUB</h4>
                 {clubs && clubs.map(club => 
-                  <span key={club.id}>
+                  <Link to={`/?club=${club.club_name}`} key={club.id}>
                     {club.club_name}
-                  </span>
+                  </Link>
                 )}
               <h4 className="filter_name">HABILIDADES</h4>
                 {skills && skills.map(skill => 
