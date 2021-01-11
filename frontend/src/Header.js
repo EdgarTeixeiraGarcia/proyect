@@ -1,12 +1,26 @@
+import { useSetUser, useUser } from './UserContext'
 import './Header.css';
+import { Link } from 'react-router-dom';
 
 function Header() {
 
+    const setMe = useSetUser();
+    const me = useUser()
+
     return (
         <header className="Header">
-            <div className="logo">Logotipo</div>
-            <div className="title">Título</div>
-            <div className="user">Usuario</div>
+            <div className="first-row">
+                <div className="logo">Logo</div>
+                <h1 className="titulo">Titulo
+                    <div>Enséñale al mundo tus habilidades</div>
+                </h1>
+                {me ?
+                    <div className="user">
+                        <Link to="/profile" className="login_header">{me.user.name}</Link>
+                        <Link to="/" onClick={() => setMe()}>Cerrar Sesión</Link>
+                    </div> : <Link to="/login" className="login_header" >Entrar</Link>
+                } 
+            </div>
         </header>
     )
 

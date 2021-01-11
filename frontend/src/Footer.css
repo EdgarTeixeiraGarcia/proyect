@@ -1,0 +1,26 @@
+.Footer {
+    height: 8rem;
+    background-color: rgb(104, 102, 102);
+    display: flex;
+}
+
+.creator {
+    flex-grow: 1;
+}
+
+.contact {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+label {
+    /* margin-left: 1rem; */
+    margin-top: 1rem;
+}
+
+.separator {
+    border-left: 10px solid white;
+}

@@ -1,23 +1,31 @@
 import React, { useContext, useState } from 'react';
 
-const userContext = React.createContext();
+const UserContext = React.createContext();
 
 const UserProvider = ({ children }) => {
-    const [me, setMe] = useState()
+    const session = JSON.parse(localStorage.getItem('session')) || undefined
 
+    const [me, setMe] = useState(session);
+
+    const setMePlus = v => {
+        localStorage.setItem('session', v ? JSON.stringify(v) : 'null')
+        setMe(v)
+    }
     return (
-        <userContext.Provider value={{ me, setMe}}>
+        <UserContext.Provider value={{ me, setMe: setMePlus }}>
             {children}
-        </userContext.Provider>
+        </UserContext.Provider>
     )
 }
 
 export const useUser = () => {
-    return useContext(userContext).me
+    console.log('Recibiendo Usuario')
+    return useContext(UserContext).me
 }
 
 export const useSetUser = () => {
-    return useContext(userContext).setMe
+    console.log('Modificando Usuario')
+    return useContext(UserContext).setMe
 }
 
 export default UserProvider

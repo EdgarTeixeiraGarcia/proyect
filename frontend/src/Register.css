@@ -1,0 +1,55 @@
+.register {
+    
+    height: 90%;
+    width: 40%;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+/* .label {
+    display: block;
+} */
+
+.form-register {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+label {
+    margin-left: 30px;
+}
+
+.input-register {
+    height: 2.5rem;
+    width: 20rem;
+    border-radius: 8px;
+    margin-top: 14px;
+    font-size: 1.2rem;
+    display: block;
+}
+
+.email {
+    width: 100%;
+}
+
+.tipo_cuenta {
+    display: flex;
+    width: 100%;
+}
+
+button {
+    justify-content: center;
+    display: flex;
+    margin-top: 14px;
+    height: 4rem;
+    width: 20rem;
+    border: 2px solid gray;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #36A420;
+    color: white;
+    font-size: 1.2rem;
+    align-items: center;
+}

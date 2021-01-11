@@ -1,9 +1,9 @@
-.Header {
-    background-color: gray;
+/* .Header {
+    background-color:white;
     display: flex;
     flex-direction: row;
     height: 8rem;
-    align-content: center;
+    align-items: center;
 }
 
 .logo {
@@ -13,4 +13,48 @@
 
 .title {
     flex-grow: 1;
-}
+} */
+
+.Header {
+    background-color: rgb(104, 102, 102);
+    color: white;
+    text-align: center;
+    height: 8rem;
+  }
+  
+  .Header .first-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 4rem;
+  }
+  
+  .Header div {
+    padding: 4px 10px;
+  }
+
+  .logo {
+      justify-content: flex-start;
+  }
+
+  .titulo {
+    flex-grow: 1;
+  }
+
+  .login_header {
+    justify-content: center;
+    display: flex;
+    margin-top: 14px;
+    height: 4rem;
+    width: 10rem;
+    border: 2px solid gray;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #084d9c;
+    color: white;
+    font-size: 1.2rem;
+    align-items: center;
+  }
+  
+  
