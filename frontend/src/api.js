@@ -5,7 +5,25 @@ export const useClubsList = () => useFetch('http://localhost:8080/api/clubs')
 export const useSkillsList = () => useFetch('http://localhost:8080/api/skills')
 export const useCountriesList = () => useFetch('http://localhost:8080/api/countries')
 export const useUsersFilterList = (position) => useFetch('http://localhost:8080/api/players/filterByPosition')
+// export const useUsersFilterByClub = () => useFetch('http://localhost:8080/api/players/filterByClub')
 // export const useUserById = (id) => useFetch('http://localhost:8080/users/' + id)
+
+
+export const filterByClub = async (club) => {
+    const ret = await fetch('http://localhost:8080/api/players/filterByClub?'  + new URLSearchParams({
+        club,
+    })) 
+    const data = await ret.json()
+    return data
+}
+
+export const filterBySkill = async (skill) => {
+    const ret = await fetch('http://localhost:8080/api/players/filterBySkill?'  + new URLSearchParams({
+        skill,
+    })) 
+    const data = await ret.json()
+    return data
+}
 
 export const login = async (email, password) => {
     const ret = await fetch('http://localhost:8080/api/users/login', {

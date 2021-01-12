@@ -4,21 +4,54 @@ import Footer from './Footer'
 import Login from './Login';
 import Register from './Register';
 import Profile from './Profile';
-import { Switch, Route, Link } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react'
+import { Switch, Route, Link, useLocation } from 'react-router-dom';
 import { useUser } from './UserContext';
-import { useClubsList, useSkillsList, useUsersFilterList } from './api';
+import { useClubsList, useSkillsList, useUsersFilterList, filterByClub, filterBySkill } from './api';
 
 
 function App() {
 
   const me = useUser()
+
+  const ages = [14,15,16,17,18,19,20,21,22,23,24,25]
+  const positions = ['Portero', 'Defensa', 'Centrocampista', 'Delantero']
   
   const clubs = useClubsList()
   const skills = useSkillsList()
   const usersSkills = useUsersFilterList()
-  // const filters = new URLSearchParams(window.location.search)
+  const location = useLocation()
+  const filters = useMemo(() => new URLSearchParams(location.search), [location])
 
-  // console.log(filters.get('club'))
+  const [data , setData ] = useState([])
+
+  // async function getFilteredUsers () {
+
+  // }
+
+  useEffect(() => {
+    if (filters.has('club')) {
+
+      console.log(filters.get('club'))
+      filterByClub(filters.get('club')).then((datos) => setData(datos))
+    }
+    if (filters.has('skill')) {
+      console.log(filters.get('skill'))
+      filterBySkill(filters.get('skill')).then((datos) => setData(datos))
+    } 
+    if (filters.has('age')) {
+      console.log(filters.get('age'))
+      // setData(x(filters.get('age')))
+    } 
+    if (filters.has('position')) {
+      console.log(filters.get('position'))
+      // setData(x(filters.get('position')))
+    }
+
+    
+  }, [filters])
+
+  console.log(filters.get('club'))
 
   return (
     <div className="App">
@@ -50,26 +83,28 @@ function App() {
                 )}
               <h4 className="filter_name">HABILIDADES</h4>
                 {skills && skills.map(skill => 
-                    <span key={skill.id}>
+                    <Link to={`/?skill=${skill.skill}`} key={skill.id}>
                       {skill.skill}
-                    </span>
+                    </Link>
                 )}
               <h4 className="filter_name">EDAD</h4>
-                <span>15</span>
-                <span>16</span>
-                <span>17</span>
-                <span>18</span>
-                <span>19</span>
-                <span>20</span>
-                <span>21</span>
-                <span>22</span>
-                <span>23</span>
+              {ages && ages.map(age => 
+                    <Link to={`/?age=${age}`} key={age}>
+                      {age}
+                    </Link>
+                )}
               <h4 className="filter_name">POSICION</h4>
-                <span>Portero</span>
-                <span>Defensa</span>
-                <span>Centrocampista</span>
-                <span>Delantero</span>
+              {positions && positions.map(position => 
+                    <Link to={`/?position=${position}`} key={position}>
+                      {position}
+                    </Link>
+                )}
               </aside>
+              <div className="welcome">
+                {data?.length > 0 ? 
+                  (<span>{data[0].name}</span>):(<span>Bienvenidos</span>)
+                }
+              </div>
           </Route>
         </Switch>
       </body>

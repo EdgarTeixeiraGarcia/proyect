@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { useSetUser } from './UserContext';
 import { login } from './api';
 import './Login.css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+
 
 function Login() {
 
     const setMe = useSetUser()
 
+    const history = useHistory()
 
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -18,6 +20,7 @@ function Login() {
         const data = await login(email, password)
         if (data.token) {
             setMe(data)
+            history.push("/");
         } else {
             setError(true)
         }
@@ -37,9 +40,7 @@ function Login() {
                         Email o Contraseña incorrecto
                     </div>
                 }
-                <button className="iniciar_sesion" type="submit">Iniciar sesión
-                <Link to="/"></Link>
-                </button>
+                <button className="iniciar_sesion" type="submit">Iniciar sesión</button>
                 <div className="separator"></div>
                 <Link to="/register" className="nueva_cuenta">Crear cuenta nueva</Link>
             </form>

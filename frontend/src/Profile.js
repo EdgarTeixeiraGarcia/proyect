@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSetUser, useUser } from './UserContext';
 import './Profile.css';
 import { useMeData, meVideos } from './api';
@@ -11,6 +11,12 @@ function Profile() {
     const setMe = useSetUser()
 
     const [name, setName] = useState(me.name || "")
+
+    const [videos, setVideos ] = useState([])
+
+    useEffect(() => {
+          meVideos(token).then((multimedia) => setVideos(multimedia))
+      }, [])
 
 
     return (
@@ -62,7 +68,7 @@ function Profile() {
                </label>
                <label>Posición principal:
                    <span></span>
-               </label>
+               </label>     
                <label>Posición secundaria:
                    <span></span>
                </label>
@@ -74,10 +80,20 @@ function Profile() {
                </label>
             </div>
             <div className="videos">Vídeos
+            <div>
+            {videos && videos.map((video)=> 
+                    <span key={video.id}>
+                      <iframe width="560" height="315" src={video.content.replace("watch?v=", "embed/")} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </span>
+                )}
+            </div>
             <button>Subir video</button>
+
             </div>
         </div>
     );
 }
+
+
 
 export default Profile;

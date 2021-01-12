@@ -3,7 +3,7 @@ const { database } = require('../infrastructure');
 async function filterByClub (req, res) {
     try {
 
-        const { club_name } = req.body;
+        const club_name = req.query.club;
 
         const [ clubs ] = await database.pool.query('SELECT id FROM clubs WHERE club_name = ?', club_name);
 
@@ -26,11 +26,25 @@ async function filterByClub (req, res) {
 async function filterBySkill (req, res) {
     try {
 
-        const { skill } = req.body;
+        const skill = req.query.skill;
 
-        const [ skills ] = await database.pool.query('SELECT id FROM skills WHERE skill = ?', skill);
+        const [players] = await database.pool.query(`
+        SELECT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+        FROM users u 
+        LEFT JOIN countries c ON u.country = c.id
+        LEFT JOIN players p ON u.id = p.id_user
+        LEFT JOIN players_skills ps ON p.id = ps.id_player
+        LEFT JOIN skills s ON ps.id_skill = s.id
+        WHERE skill = ?`, skill)
 
-        const [ players ] = await database.pool.query('SELECT * FROM players_skills WHERE id_skill = ?', [skills[0].id])
+        // const [ skills ] = await database.pool.query('SELECT id FROM skills WHERE skill = ?', skill);
+
+        // const [ players ] = await database.pool.query('SELECT id_user FROM players_skills WHERE id_skill = ?', [skills[0].id])
+
+        // const [ users ] = await database.pool.query(`SELECT u.*, c.country 
+        // FROM users u 
+        // LEFT JOIN countries c ON u.country = c.id 
+        // LEFT JOIN players p ON u.id = p.id_user WHERE u.id = ?`, [players[0].id_user])
 
         console.log(skill)
  
@@ -47,11 +61,11 @@ async function filterBySkill (req, res) {
 async function filterByPosition (req, res) {
     try {
 
-        const { position } = req.body;
+        const { position } = req.query;
 
         console.log(position)
 
-        if (position === 'portero') {
+        if (position === 'Portero') {
             
             const [ players ] = await database.pool.query('SELECT * FROM players WHERE main_position = "portero"')
 
@@ -59,7 +73,7 @@ async function filterByPosition (req, res) {
             res.send(players);
         } 
 
-        if (position === 'defensa') {
+        if (position === 'Defensa') {
             
             const [ players ] = await database.pool.query(`
             SELECT * 
@@ -70,7 +84,7 @@ async function filterByPosition (req, res) {
             res.send(players);
         } 
         
-        if (position === 'centrocampista') {
+        if (position === 'Centrocampista') {
             
             const [ players ] = await database.pool.query(`
             SELECT * 
@@ -81,7 +95,7 @@ async function filterByPosition (req, res) {
             res.send(players);
         } 
         
-        if (position === 'delantero') {
+        if (position === 'Delantero') {
             
             const [ players ] = await database.pool.query(`
             SELECT * 

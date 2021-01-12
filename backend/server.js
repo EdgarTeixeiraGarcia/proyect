@@ -63,8 +63,8 @@ app.get('/api/multimedia/videos/:playerId', multimediaController.getPlayerVideos
 app.put('/api/videos/upload', validateAuthorization, multimediaController.uploadVideo)
 
 // Filtros
-app.get('/api/playersByClub', filtersController.filterByClub)
-app.get('/api/playersBySkill', filtersController.filterBySkill)
+app.get('/api/players/filterByClub', filtersController.filterByClub)
+app.get('/api/players/filterBySkill', filtersController.filterBySkill)
 app.get('/api/players/filterByPosition', filtersController.filterByPosition)
 
 //Ficheros estáticos de la carpeta uploads

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useSetUser } from './UserContext';
 import { register, useCountriesList } from './api';
 import './Register.css';
@@ -7,6 +8,7 @@ function Register() {
 
     const setMe = useSetUser()
     const countries = useCountriesList()
+    const history = useHistory()
 
     const [name, setName] = useState();
     const [last_name, setLast_name] = useState();
@@ -24,6 +26,7 @@ function Register() {
         const data = await register(name, last_name, nif, email, birthdate, password, repeatedPassword, rol, country)
         if (data.token) {
             setMe(data)
+            history.push("/");
         } else {
             setError(data.error || true)
         }
