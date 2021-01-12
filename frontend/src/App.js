@@ -7,7 +7,7 @@ import Profile from './Profile';
 import { useState, useMemo, useEffect } from 'react'
 import { Switch, Route, Link, useLocation } from 'react-router-dom';
 import { useUser } from './UserContext';
-import { useClubsList, useSkillsList, useUsersFilterList, filterByClub, filterBySkill } from './api';
+import { useClubsList, useSkillsList, useUsersFilterList, filterByClub, filterBySkill, filterByPosition, filterByAge } from './api';
 
 
 function App() {
@@ -25,14 +25,10 @@ function App() {
 
   const [data , setData ] = useState([])
 
-  // async function getFilteredUsers () {
-
-  // }
-
   useEffect(() => {
     if (filters.has('club')) {
 
-      console.log(filters.get('club'))
+      // console.log(filters.get('club'))
       filterByClub(filters.get('club')).then((datos) => setData(datos))
     }
     if (filters.has('skill')) {
@@ -41,17 +37,17 @@ function App() {
     } 
     if (filters.has('age')) {
       console.log(filters.get('age'))
-      // setData(x(filters.get('age')))
+      filterByAge(filters.get('age')).then((datos) => setData(datos))
     } 
     if (filters.has('position')) {
       console.log(filters.get('position'))
-      // setData(x(filters.get('position')))
+      filterByPosition(filters.get('position')).then((datos) => setData(datos))
     }
 
     
   }, [filters])
 
-  console.log(filters.get('club'))
+  // console.log(filters.get('club'))
 
   return (
     <div className="App">

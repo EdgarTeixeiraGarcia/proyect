@@ -57,7 +57,6 @@ function Profile() {
                 </label>
                 <button>Actualizar datos personales</button>
                 </div>
-                
             </form>
             <div className="ficha_tecnica">Ficha Técnica
                <label>Altura:

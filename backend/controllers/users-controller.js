@@ -8,15 +8,11 @@ const sgMail = require('@sendgrid/mail');
 
 const { database } = require('../infrastructure');
 
-// CREAMOS LA FUNCIÓN PARA OBTENER LOS USUARIOS DE LA BBDD
-
-// async function sendEmail ({ email, title, content}) {
+// async function sendEmail({ email, title, content}) {
 
 //     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     
-//     try {
-
-//         sgMail.send({
+//         await sgMail.send({
 //             to: email,
 //             from: 'edgar_wiman5@hotmail.com',
 //             subject: title,
@@ -26,14 +22,10 @@ const { database } = require('../infrastructure');
 //                 <p>${content}</p>
 //             </div>`
 //         });
-
-//     } catch(err) {
-        
-//         res.status(500);
-//         res.send({ error: err.message});
-//     }
     
 // }
+
+// CREAMOS LA FUNCIÓN PARA OBTENER LOS USUARIOS DE LA BBDD
 
 async function getUsers(req, res) {
     try {

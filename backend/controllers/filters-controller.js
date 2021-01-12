@@ -61,13 +61,20 @@ async function filterBySkill (req, res) {
 async function filterByPosition (req, res) {
     try {
 
-        const { position } = req.query;
+        const  position  = req.query.position;
 
         console.log(position)
 
         if (position === 'Portero') {
             
-            const [ players ] = await database.pool.query('SELECT * FROM players WHERE main_position = "portero"')
+            // const [ players ] = await database.pool.query('SELECT * FROM players WHERE main_position = "portero"')
+
+            const [ players ] = await database.pool.query(`
+            SELECT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+            FROM users u 
+            LEFT JOIN countries c ON u.country = c.id
+            LEFT JOIN players p On u.id = p.id_user
+            WHERE main_position = "portero"`)
 
             res.status(200);
             res.send(players);
@@ -76,8 +83,10 @@ async function filterByPosition (req, res) {
         if (position === 'Defensa') {
             
             const [ players ] = await database.pool.query(`
-            SELECT * 
-            FROM players 
+            SELECT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+            FROM users u 
+            LEFT JOIN countries c ON u.country = c.id
+            LEFT JOIN players p On u.id = p.id_user
             WHERE main_position = "lateral_derecho" OR main_position = "defensa_central" OR main_position = "lateral_izquierdo"`)
 
             res.status(200);
@@ -87,8 +96,10 @@ async function filterByPosition (req, res) {
         if (position === 'Centrocampista') {
             
             const [ players ] = await database.pool.query(`
-            SELECT * 
-            FROM players 
+            SELECT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+            FROM users u 
+            LEFT JOIN countries c ON u.country = c.id
+            LEFT JOIN players p On u.id = p.id_user
             WHERE main_position = "centrocampista_defensivo" OR main_position = "medio_izquierdo" OR main_position = "medio_derecho" OR main_position = "centrocampista_ofensivo"`)
 
             res.status(200);
@@ -98,16 +109,16 @@ async function filterByPosition (req, res) {
         if (position === 'Delantero') {
             
             const [ players ] = await database.pool.query(`
-            SELECT * 
-            FROM players 
+            SELECT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+            FROM users u 
+            LEFT JOIN countries c ON u.country = c.id
+            LEFT JOIN players p On u.id = p.id_user
             WHERE main_position = "extremo_izquierdo" OR main_position = "extremo_derecho" OR main_position = "segundo_delantero" OR main_position = "delantero_centro"`)
 
             res.status(200);
             res.send(players);
         }  
  
-        // res.status(200);
-        // res.send(players);
 
     } catch (err) {
 
@@ -116,17 +127,16 @@ async function filterByPosition (req, res) {
     }
 }
 
-
 async function filterByAge(req, res) {
     try {
 
-        const { age } = req.body;
+        const  age = req.query.age;
 
-        const [ ages ] = await database.pool.query('SELECT id FROM clubs WHERE club_name = ?', club_name);
-
-        const [ players ] = await database.pool.query('SELECT * FROM players WHERE actual_team = ?', [clubs[0].id])
-
-        console.log(club_name)
+        const [ players ] = await database.pool.query(`
+        SELECT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+        FROM users u 
+        LEFT JOIN countries c ON u.country = c.id
+        WHERE TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) = ?`, age)
  
         res.status(200);
         res.send(players);
@@ -142,4 +152,5 @@ module.exports = {
     filterByClub,
     filterBySkill,
     filterByPosition,
+    filterByAge,
 }

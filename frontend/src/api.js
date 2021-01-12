@@ -25,6 +25,22 @@ export const filterBySkill = async (skill) => {
     return data
 }
 
+export const filterByPosition = async (position) => {
+    const ret = await fetch('http://localhost:8080/api/players/filterByPosition?'  + new URLSearchParams({
+        position,
+    })) 
+    const data = await ret.json()
+    return data
+}
+
+export const filterByAge = async (age) => {
+    const ret = await fetch('http://localhost:8080/api/players/filterByAge?'  + new URLSearchParams({
+        age,
+    })) 
+    const data = await ret.json()
+    return data
+}
+
 export const login = async (email, password) => {
     const ret = await fetch('http://localhost:8080/api/users/login', {
         method: 'POST',

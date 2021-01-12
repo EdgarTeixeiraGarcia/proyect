@@ -66,6 +66,7 @@ app.put('/api/videos/upload', validateAuthorization, multimediaController.upload
 app.get('/api/players/filterByClub', filtersController.filterByClub)
 app.get('/api/players/filterBySkill', filtersController.filterBySkill)
 app.get('/api/players/filterByPosition', filtersController.filterByPosition)
+app.get('/api/players/filterByAge', filtersController.filterByAge)
 
 //Ficheros estáticos de la carpeta uploads
 app.use('/static', express.static('uploads'))
