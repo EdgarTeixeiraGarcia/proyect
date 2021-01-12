@@ -8,6 +8,81 @@ export const useUsersFilterList = (position) => useFetch('http://localhost:8080/
 // export const useUsersFilterByClub = () => useFetch('http://localhost:8080/api/players/filterByClub')
 // export const useUserById = (id) => useFetch('http://localhost:8080/users/' + id)
 
+export const login = async (email, password) => {
+    const ret = await fetch('http://localhost:8080/api/users/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password})
+    })
+    const data = await ret.json()
+    return data
+}
+
+export const register = async (name, last_name, nif, email, birthdate, password, repeatedPassword, rol, country) => {
+    const ret = await fetch('http://localhost:8080/api/users/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify({ name, last_name, nif, email, birthdate, password, repeatedPassword, rol, country})
+    })
+    const data = await ret.json()
+    return data
+}
+
+export const updateTecnicalData = async (token, height, dominant_leg, main_position, secundary_position, property_of, actual_team) => {
+    debugger
+    const ret = await fetch('http://localhost:8080/api/player/update', {
+        method: 'PUT',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'},
+        body: JSON.stringify({ token, height, dominant_leg, main_position, secundary_position, property_of, actual_team })
+    })
+    const data = await ret.json()
+    return data
+}
+
+export const meTecnicalData = async (token, id)  => {
+
+    const ret = await fetch('http://localhost:8080/api/player/tecnicalData', {
+        method: 'GET',
+        headers: { 'Authorization': 'Bearer ' + token},
+    })
+    const data = await ret.json()
+    return data
+}
+
+export const useMePersonalData = async (token, phone, perfil_photo)  => {
+
+    const fd = new FormData()
+    fd.append('phone', phone)
+    fd.append('perfil_photo', perfil_photo)
+
+    const ret = await fetch('http://localhost:8080/api/user/update', {
+        method: 'PUT',
+        headers: { 'Authorization': 'Bearer ' + token},
+        body: fd
+    })
+    const data = await ret.json()
+    return data
+}
+
+
+
+// export const clubsList = async () => {
+
+//     const ret = await fetch('http://localhost:8080/api/clubs', {
+//         method: 'GET'
+//     })
+//     const data = await ret.json()
+//     return data
+// }
+
+export const meVideos = async (token) => {
+    const ret = await fetch('http://localhost:8080/api/multimedia/meVideos', {
+        method: 'GET',
+        headers: { 'Authorization': 'Bearer ' + token},
+    })
+    const data = await ret.json()
+    return data
+}
 
 export const filterByClub = async (club) => {
     const ret = await fetch('http://localhost:8080/api/players/filterByClub?'  + new URLSearchParams({
@@ -37,59 +112,6 @@ export const filterByAge = async (age) => {
     const ret = await fetch('http://localhost:8080/api/players/filterByAge?'  + new URLSearchParams({
         age,
     })) 
-    const data = await ret.json()
-    return data
-}
-
-export const login = async (email, password) => {
-    const ret = await fetch('http://localhost:8080/api/users/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password})
-    })
-    const data = await ret.json()
-    return data
-}
-
-export const register = async (name, last_name, nif, email, birthdate, password, repeatedPassword, rol, country) => {
-    const ret = await fetch('http://localhost:8080/api/users/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify({ name, last_name, nif, email, birthdate, password, repeatedPassword, rol, country})
-    })
-    const data = await ret.json()
-    return data
-}
-
-export const useMeData = async (token, phone, perfil_photo)  => {
-
-    const fd = new FormData()
-    fd.append('phone', phone)
-    fd.append('perfil_photo', perfil_photo)
-
-    const ret = await fetch('http://localhost:8080/api/user/update', {
-        method: 'PUT',
-        headers: { 'Authorization': 'Bearer ' + token},
-        body: fd
-    })
-    const data = await ret.json()
-    return data
-}
-
-// export const clubsList = async () => {
-
-//     const ret = await fetch('http://localhost:8080/api/clubs', {
-//         method: 'GET'
-//     })
-//     const data = await ret.json()
-//     return data
-// }
-
-export const meVideos = async (token) => {
-    const ret = await fetch('http://localhost:8080/api/multimedia/meVideos', {
-        method: 'GET',
-        headers: { 'Authorization': 'Bearer ' + token},
-    })
     const data = await ret.json()
     return data
 }

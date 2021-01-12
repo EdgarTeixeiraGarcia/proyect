@@ -15,6 +15,7 @@ const {
 
 const { validateAuthorization } = require ('./middlewares');
 const filtersController = require('./controllers/filters-controller');
+const { valid } = require('joi');
 // const { updateUser } = require('./controllers/users-controller');
 
 const upload = multer()
@@ -41,6 +42,7 @@ app.get('/api/users/:userId', usersController.getUserData);
 
 // Players
 
+app.get('/api/player/tecnicalData', validateAuthorization, playersController.getTecnicalDataPlayer)
 app.put('/api/player/update', validateAuthorization, playersController.updatePlayer)
 app.put('/api/player/updateActualClub', validateAuthorization, playersController.updateActualClub)
 app.put('/api/player/updatePropertyClub', validateAuthorization, playersController.updatePropertyClub)

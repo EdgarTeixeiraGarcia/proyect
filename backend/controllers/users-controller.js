@@ -7,6 +7,7 @@ const uuid = require('uuid');
 const sgMail = require('@sendgrid/mail');
 
 const { database } = require('../infrastructure');
+const { playersController } = require('.');
 
 // async function sendEmail({ email, title, content}) {
 
@@ -380,32 +381,53 @@ async function getUserData (req, res) {
         
         const { userId } = req.params;
 
-        const [ userClub ] = await database.pool.query(`
-        SELECT u.*,c.country,cl_actual.club_name,cl_propiedad.club_name
+        const [playerData] = await database.pool.query(`
+        SELECT u.*,c.country,cl_actual.club_name,cl_propiedad.club_name,s.skill,mc.*
         FROM users u 
         LEFT JOIN countries c ON u.country = c.id 
-        JOIN players p ON u.id = p.id_user
+        LEFT JOIN players p ON u.id = p.id_user
         LEFT JOIN clubs cl_actual ON cl_actual.id = p.actual_team
         LEFT JOIN clubs cl_propiedad ON cl_propiedad.id = p.property_of
-        WHERE u.id = ? `, userId);
+        LEFT JOIN players_skills ps ON p.id = ps.id_player
+        LEFT JOIN skills s ON s.id = ps.id_skill
+        LEFT JOIN multimedia_contents mc ON p.id = mc.id_player
+        WHERE p.id_user = ?`, userId)
 
-        const [ userSkills ] = await database.pool.query(`
-        SELECT u.*,s.skill
-        FROM users u 
-        JOIN players p ON u.id = p.id_user
-        JOIN players_skills ps ON p.id = ps.id_player
-        JOIN skills s ON s.id = ps.id_skill
-        WHERE u.id = ?;`, userId)
+        let skills = []
+        let videos = []
 
-        const [ userMultimedia ] = await database.pool.query(`
-        SELECT u.*,mc.*
-        FROM users u 
-        JOIN players p ON u.id = p.id_user
-        JOIN multimedia_contents mc ON p.id = mc.id_player
-        WHERE u.id = ?;`, userId)
+        playerData.forEach((player) => {
+            if(!skills.includes(player.skill) && player.skill){ skills.push(player.skill)}
+            if(!videos.includes(player.content) && player.content){ videos.push(player.content)}
+        }
+        )
+
+        // const [ userClub ] = await database.pool.query(`
+        // SELECT u.*,c.country,cl_actual.club_name,cl_propiedad.club_name
+        // FROM users u 
+        // LEFT JOIN countries c ON u.country = c.id 
+        // JOIN players p ON u.id = p.id_user
+        // LEFT JOIN clubs cl_actual ON cl_actual.id = p.actual_team
+        // LEFT JOIN clubs cl_propiedad ON cl_propiedad.id = p.property_of
+        // WHERE u.id = ? `, userId);
+
+        // const [ userSkills ] = await database.pool.query(`
+        // SELECT u.*,s.skill
+        // FROM users u 
+        // JOIN players p ON u.id = p.id_user
+        // JOIN players_skills ps ON p.id = ps.id_player
+        // JOIN skills s ON s.id = ps.id_skill
+        // WHERE u.id = ?;`, userId)
+
+        // const [ userMultimedia ] = await database.pool.query(`
+        // SELECT u.*,mc.*
+        // FROM users u 
+        // JOIN players p ON u.id = p.id_user
+        // JOIN multimedia_contents mc ON p.id = mc.id_player
+        // WHERE u.id = ?;`, userId)
 
         res.status(200);
-        res.send(userMultimedia);
+        res.send({...playerData[0], skill:skills, content:videos});
 
     }catch(err) {
 

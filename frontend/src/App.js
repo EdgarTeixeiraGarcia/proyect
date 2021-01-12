@@ -59,6 +59,9 @@ function App() {
           </aside> */}
         {/* {me ? <Profile /> : <Login/>} */}
         <Switch>
+        <Route path="/player">
+            <Profile />
+          </Route>
           <Route path="/profile">
             <Profile />
           </Route>
@@ -98,7 +101,7 @@ function App() {
               </aside>
               <div className="welcome">
                 {data?.length > 0 ? 
-                  (<span>{data[0].name}</span>):(<span>Bienvenidos</span>)
+                  (data.map(player => (<Link to={`/player?id=${player.id}`}>{player.name}</Link>))):(<span>Bienvenidos</span>)
                 }
               </div>
           </Route>

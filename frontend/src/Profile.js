@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment, useCallback } from 'react';
 import { useSetUser, useUser } from './UserContext';
 import './Profile.css';
-import { useMeData, meVideos } from './api';
+import { useMePersonalData, meVideos, meTecnicalData, updateTecnicalData, useClubsList } from './api';
+import { act } from 'react-dom/test-utils';
 
 
 function Profile() {
@@ -10,13 +11,48 @@ function Profile() {
     console.log(me);
     const setMe = useSetUser()
 
-    const [name, setName] = useState(me.name || "")
+    const clubs = useClubsList()
 
     const [videos, setVideos ] = useState([])
+    const [data, setData ] = useState({})
+
+    // const [ tecnicalData, setTecnicalData ] = useState({})
+
+    // const [name, setName] = useState(me.name || "")
+    const [ phone, setPhone ] = useState(me.phone || "")
+
+    const [ height, setHeight ] = useState(data.height || "")
+    const [ dominantLeg, setDominantLeg ] = useState(data.dominant_leg || "")
+    const [ mainPosition, setMainPosition ] = useState(data.main_position || "")
+    const [ secundaryPosition, setSecundaryPosition ] = useState(data.secundary_position || "")
+    const [ propertyOf, setPropertyOf ] = useState(data.property_of || "")
+    const [ actualTeam, setActualTeam ] = useState(data.actual_team || "")
+
+    const handleTecnicalData = useCallback((e) => {
+        e.preventDefault()
+        
+        updateTecnicalData(token, height, dominantLeg, mainPosition, secundaryPosition, propertyOf, actualTeam)
+    },[height,dominantLeg,mainPosition,secundaryPosition,propertyOf,actualTeam])
 
     useEffect(() => {
           meVideos(token).then((multimedia) => setVideos(multimedia))
+          
+          if(me.rol === 'player'){
+            meTecnicalData(token, me.id).then((tecnicalData) => setData(tecnicalData))
+          }
+          
       }, [])
+
+    useEffect(() => {
+        setHeight(data.height)
+        setDominantLeg(data.dominant_leg)
+        setMainPosition(data.main_position)
+        setSecundaryPosition(data.secundary_position)
+        setPropertyOf(data.property_of)
+        setActualTeam(data.actual_team)
+    }, [data])
+
+    
 
 
     return (
@@ -58,37 +94,66 @@ function Profile() {
                 <button>Actualizar datos personales</button>
                 </div>
             </form>
-            <div className="ficha_tecnica">Ficha Técnica
-               <label>Altura:
-                   <span></span>
-               </label>
-               <label>Pierna dominante:
-                   <span></span>
-               </label>
-               <label>Posición principal:
-                   <span></span>
-               </label>     
-               <label>Posición secundaria:
-                   <span></span>
-               </label>
-               <label>Propiedad de:
-                   <span></span>
-               </label>
-               <label>Equipo actual:
-                   <span></span>
-               </label>
-            </div>
-            <div className="videos">Vídeos
-            <div>
-            {videos && videos.map((video)=> 
-                    <span key={video.id}>
-                      <iframe width="560" height="315" src={video.content.replace("watch?v=", "embed/")} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </span>
-                )}
-            </div>
-            <button>Subir video</button>
-
-            </div>
+            {me.rol==='player' ? (
+            <Fragment>
+                <div className="ficha_tecnica">Ficha Técnica
+                    <form onSubmit={handleTecnicalData}>
+                        <label>Altura:
+                            <input value={height} onChange={e => setHeight(e.target.value)}></input>
+                        </label>
+                        <label>Pierna dominante:
+                            <input value={dominantLeg} onChange={e => setDominantLeg(e.target.value)}></input>
+                        </label>
+                        <label>Posición principal:
+                            <input value={mainPosition} onChange={e => setMainPosition(e.target.value)}></input>
+                        </label>     
+                        <label>Posición secundaria:
+                            <input value={secundaryPosition} onChange={e => setSecundaryPosition(e.target.value)}></input>
+                        </label>
+                        <label>Propiedad de:
+                            <select className="countries-list" name="club" value={propertyOf} onChange={e => setPropertyOf(e.target.value)}>
+                            {clubs && clubs.map(club => 
+                                <option key={club.id} value={club.id}>
+                                    {club.club_name}
+                                </option>
+                            )}
+                            </select>
+                        </label>
+                        <label>Equipo actual:
+                            <select className="countries-list" name="club" value={actualTeam} onChange={e => setActualTeam(e.target.value)}>
+                            {clubs && clubs.map(club => 
+                                <option key={club.id} value={club.id}>
+                                    {club.club_name}
+                                </option>
+                            )}
+                            </select>
+                        </label>
+                        <button type="submit">Actual datos Tecnicos</button>
+                    </form>
+               
+                </div>
+                <div className="videos">Vídeos
+                    <div>
+                        {videos && videos.map((video)=> 
+                                <span key={video.id}>
+                                <iframe width="560" height="315" src={video.content.replace("watch?v=", "embed/")} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                                </span>
+                        )}
+                    </div>
+                <button>Subir video</button>
+                </div>
+            </Fragment>
+           
+            ): (
+                <Fragment>
+                    <div className="agency">Agencia
+                        <label>Nombre:
+                            <span></span>
+                        </label>
+                    </div> 
+                </Fragment>
+            )}
+            
         </div>
     );
 }

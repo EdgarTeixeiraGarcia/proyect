@@ -3,17 +3,10 @@ const Joi = require('joi');
 const { database } = require('../infrastructure');
 
 
-async function updatePlayer(req, res) {
+
+async function getTecnicalDataPlayer(req, res) {
     
     try {
-
-        const {
-            height,
-            dominant_leg,
-            main_position,
-            secundary_position,
-
-        } = req.body;
 
         const { id } = req.auth;
 
@@ -24,9 +17,46 @@ async function updatePlayer(req, res) {
             err.code = 404;
             throw err;
         }
+        
+        res.status(200);
+        res.send(player[0]);
+    }
+    
+    
+    
+    catch (err) {
+        res.status(err.httpCode || 500);
+        res.send({ error: err.message});
+    }
+}
 
-        const updateUserQuery = 'UPDATE players SET height = ?, dominant_leg = ?, main_position = ?, secundary_position= ? WHERE id_user= ?'
-        await database.pool.query(updateUserQuery, [height, dominant_leg, main_position, secundary_position, id])
+async function updatePlayer(req, res) {
+    
+    try {
+
+        const {
+            height,
+            dominant_leg,
+            main_position,
+            secundary_position,
+            actual_team,
+            property_of,
+
+        } = req.body;
+
+        console.log(height, dominant_leg, main_position, secundary_position, actual_team, property_of)
+
+        const { id } = req.auth;
+
+        const [ player ] = await database.pool.query('SELECT * FROM players WHERE id_user = ?', id);
+
+        // const [ actual_team ] = await database.pool.query('SELECT id FROM clubs WHERE club_name = ?', actual_team);
+        // const [ property_of ] = await database.pool.query('SELECT id FROM clubs WHERE club_name = ?', property_of);
+
+        const updateUserQuery = `
+        UPDATE players 
+        SET height = ?, dominant_leg = ?, main_position = ?, secundary_position= ?, actual_team = ?, property_of = ? WHERE id_user= ? `
+        await database.pool.query(updateUserQuery, [height, dominant_leg, main_position, secundary_position, actual_team, property_of, id])
         
 
         res.status(200);
@@ -136,4 +166,5 @@ module.exports = {
     insertPlayerSkill,
     updateActualClub,
     updatePropertyClub,
+    getTecnicalDataPlayer,
 }
