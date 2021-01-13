@@ -1,4 +1,5 @@
-import { useState, useEffect, Fragment, useCallback } from 'react';
+import { useState, useEffect, Fragment, useCallback, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useSetUser, useUser } from './UserContext';
 import './Profile.css';
 import { playerProfile } from './api';
@@ -7,16 +8,26 @@ import { act } from 'react-dom/test-utils';
 
 function Profile() {
 
+    const location = useLocation()
+
+    const filters = useMemo(() => new URLSearchParams(location.search), [location])
+
     const { user: me, token } = useUser();
-    const [ playerProfile, setPlayerProfile] = useState([])
+    const [data , setData ] = useState([])
+    
+    
+    const dataProfile = playerProfile()
+    console.log(dataProfile)
 
     useEffect(() => {
-        playerProfile.then((dataPlayer)=> setPlayerProfile(dataPlayer))
-    }, [])
+        if (filters.has('id')) {
+          console.log(filters.get('id'))
+          playerProfile(filters.get('id')).then((datos) => setData(datos))
+        }    
+      }, [filters])
 
     return (
         <div className="player-profile">
-            <h2>Mi Perfil</h2>
             <label className="foto_perfil">
                <span>Foto de Perfil</span> 
                {/* <div className="value">
@@ -26,30 +37,65 @@ function Profile() {
             </label>
                 <div className="personal_data">Datos Personales
                 <label>Nombre:
-                    <span></span>
+                    <span>{data.name}</span>
                 </label>
                 <label>Apellidos:
-                    <span></span>
+                    <span>{data.last_name}</span>
                 </label>
                 <label>NIF:
-                    <span></span>
+                    <span>{data.nif}</span>
                 </label>
                 <label>Email:
-                    <span></span>
+                    <span>{data.email}</span>
                 </label>
                 <label>Fecha de Nacimiento:
-                    <span></span>
+                    <span>{data.birthdate}</span>
                 </label>
                 <label>Edad:
-                    <span></span>
+                    <span>{data.age}</span>
                 </label>
                 <label>Teléfono:
-                    <span></span>
+                    <span>{data.phone}</span>
                 </label>
                 <label>País:
-                    <span></span>
+                    <span>{data.country}</span>
                 </label>
-                <button>Actualizar datos personales</button>
+                </div>
+                <div className="personal_data">Ficha Técnica
+                <label>Altura:
+                    <span>{data.height}</span>
+                </label>
+                <label>Pierna Dominante:
+                    <span>{data.dominant_leg}</span>
+                </label>
+                <label>Posición Principal:
+                    <span>{data.main_position}</span>
+                </label>
+                <label>Posición Secundaria:
+                    <span>{data.secundary_position}</span>
+                </label>
+                <label>Equipo Actual:
+                    <span>{data.actual_team}</span>
+                </label>
+                <label>Propiedad de:
+                    <span>{data.property_of}</span>
+                </label>
+                </div>
+                <div>Habilidades
+                    {data.skill && data.skill.map((playerSkill)=> 
+                        <div key={playerSkill.id}>
+                            <span>{playerSkill}</span>
+                        </div>
+                    )}
+                </div>
+                <div className="videos">Vídeos
+                    <div>
+                        {data.content && data.content.map((video)=> 
+                                <span key={video.id}>
+                                <iframe width="560" height="315" src={video.replace("watch?v=", "embed/")} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                                </span>
+                        )}
+                    </div>
                 </div>
             {me.rol==='manager' && (
               <button>Enviar solicitud de contratacion</button>

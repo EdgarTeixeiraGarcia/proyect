@@ -29,7 +29,7 @@ async function filterBySkill (req, res) {
         const skill = req.query.skill;
 
         const [players] = await database.pool.query(`
-        SELECT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+        SELECT DISTINCT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
         FROM users u 
         LEFT JOIN countries c ON u.country = c.id
         LEFT JOIN players p ON u.id = p.id_user

@@ -5,8 +5,6 @@ export const useClubsList = () => useFetch('http://localhost:8080/api/clubs')
 export const useSkillsList = () => useFetch('http://localhost:8080/api/skills')
 export const useCountriesList = () => useFetch('http://localhost:8080/api/countries')
 export const useUsersFilterList = (position) => useFetch('http://localhost:8080/api/players/filterByPosition')
-// export const useUsersFilterByClub = () => useFetch('http://localhost:8080/api/players/filterByClub')
-// export const useUserById = (id) => useFetch('http://localhost:8080/users/' + id)
 
 export const login = async (email, password) => {
     const ret = await fetch('http://localhost:8080/api/users/login', {
@@ -52,6 +50,16 @@ export const insertSkills = async (token, skill) => {
 export const meTecnicalData = async (token, id)  => {
 
     const ret = await fetch('http://localhost:8080/api/player/tecnicalData', {
+        method: 'GET',
+        headers: { 'Authorization': 'Bearer ' + token},
+    })
+    const data = await ret.json()
+    return data
+}
+
+export const playerData = async (token, id)  => {
+
+    const ret = await fetch('http://localhost:8080/api/users/playerProfile', {
         method: 'GET',
         headers: { 'Authorization': 'Bearer ' + token},
     })
@@ -135,10 +143,11 @@ export const filterByAge = async (age) => {
     return data
 }
 
-export const playerProfile = async () => {
-    const ret = await fetch('http://localhost:8080/api/users/playerProfile?', {
-        method: 'GET',
-    })
+export const playerProfile = async (id) => {
+    const ret = await fetch('http://localhost:8080/api/users/playerProfile?'  + new URLSearchParams({
+        id,
+    })) 
     const data = await ret.json()
     return data
 }
+

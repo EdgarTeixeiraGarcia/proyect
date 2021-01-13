@@ -1,5 +1,6 @@
 import './App.css';
 import Header from './Header';
+import Acordeon from './Acordeon';
 import Footer from './Footer'
 import Login from './Login';
 import Register from './Register';
@@ -44,6 +45,10 @@ function App() {
       console.log(filters.get('position'))
       filterByPosition(filters.get('position')).then((datos) => setData(datos))
     }
+    // if (filters.has('id')) {
+    //   console.log(filters.get('id'))
+    //   playerProfile(filters.get('id')).then((datos) => setData(datos))
+    // }
 
     
   }, [filters])
@@ -60,8 +65,8 @@ function App() {
           </aside> */}
         {/* {me ? <Profile /> : <Login/>} */}
         <Switch>
-        <Route path="/player">
-            <Profile />
+        <Route path="/playerProfile">
+            <PlayerProfile />
           </Route>
           <Route path="/profile">
             <Profile />
@@ -76,33 +81,46 @@ function App() {
             <aside className="filter">
               <h3>Filtros</h3>
               <h4 className="filter_name">CLUB</h4>
+              <Acordeon>
                 {clubs && clubs.map(club => 
                   <Link to={`/?club=${club.club_name}`} key={club.id}>
-                    {club.club_name}
+                    <span>{club.club_name}</span>
                   </Link>
                 )}
+                </Acordeon>
               <h4 className="filter_name">HABILIDADES</h4>
-                {skills && skills.map(skill => 
-                    <Link to={`/?skill=${skill.skill}`} key={skill.id}>
-                      {skill.skill}
-                    </Link>
-                )}
+                <Acordeon>
+                  {skills && skills.map(skill => 
+                      <Link to={`/?skill=${skill.skill}`} key={skill.id}>
+                        <span>{skill.skill}</span>
+                      </Link>
+                  )}
+                </Acordeon>
               <h4 className="filter_name">EDAD</h4>
+              <Acordeon>
               {ages && ages.map(age => 
                     <Link to={`/?age=${age}`} key={age}>
-                      {age}
+                      <span>{age}</span>
                     </Link>
                 )}
+              </Acordeon>
               <h4 className="filter_name">POSICION</h4>
+              <Acordeon>
               {positions && positions.map(position => 
                     <Link to={`/?position=${position}`} key={position}>
-                      {position}
+                      <span>{position}</span>
                     </Link>
                 )}
+              </Acordeon>
               </aside>
               <div className="welcome">
                 {data?.length > 0 ? 
-                  (data.map(player => (<Link to={`/player?id=${player.id}`}>{player.name}</Link>))):(<span>Bienvenidos</span>)
+                  (data.map(player => (<Link to={`/playerProfile?id=${player.id}`} key={player.id}>
+                    <div>
+                      <span>{player.name}</span>
+                      <span>{player.age}</span>
+                      <span>{player.country}</span>
+                    </div></Link>))):(<span>Bienvenidos</span>)
                 }
               </div>
           </Route>

@@ -379,10 +379,12 @@ async function deleteUser(req, res) {
 async function getUserData (req, res) {
     try {
         
-        const  userId  = req.query.id;
+        const  id  = req.query.id;
+
+        console.log(id)
 
         const [playerData] = await database.pool.query(`
-        SELECT u.*,c.country,cl_actual.club_name,cl_propiedad.club_name,s.skill,mc.*
+        SELECT u.*,p.*,c.country,cl_actual.club_name,cl_propiedad.club_name,s.skill,mc.*,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age
         FROM users u 
         LEFT JOIN countries c ON u.country = c.id 
         LEFT JOIN players p ON u.id = p.id_user
@@ -391,7 +393,7 @@ async function getUserData (req, res) {
         LEFT JOIN players_skills ps ON p.id = ps.id_player
         LEFT JOIN skills s ON s.id = ps.id_skill
         LEFT JOIN multimedia_contents mc ON p.id = mc.id_player
-        WHERE p.id_user = ?`, userId)
+        WHERE p.id_user = ?`, id)
 
         let skills = []
         let videos = []
