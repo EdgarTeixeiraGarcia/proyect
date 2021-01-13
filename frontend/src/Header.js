@@ -1,6 +1,6 @@
 import { useSetUser, useUser } from './UserContext'
 import './Header.css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory} from 'react-router-dom';
 
 function Header() {
 
@@ -10,7 +10,7 @@ function Header() {
     return (
         <header className="Header">
             <div className="first-row">
-                <div className="logo">Logo</div>
+                <Link to="/">Logo</Link> 
                 <h1 className="titulo">Titulo
                     <div>Enséñale al mundo tus habilidades</div>
                 </h1>

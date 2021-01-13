@@ -379,7 +379,7 @@ async function deleteUser(req, res) {
 async function getUserData (req, res) {
     try {
         
-        const { userId } = req.params;
+        const  userId  = req.query.id;
 
         const [playerData] = await database.pool.query(`
         SELECT u.*,c.country,cl_actual.club_name,cl_propiedad.club_name,s.skill,mc.*

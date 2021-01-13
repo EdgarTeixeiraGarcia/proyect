@@ -29,11 +29,21 @@ export const register = async (name, last_name, nif, email, birthdate, password,
 }
 
 export const updateTecnicalData = async (token, height, dominant_leg, main_position, secundary_position, property_of, actual_team) => {
-    debugger
     const ret = await fetch('http://localhost:8080/api/player/update', {
         method: 'PUT',
         headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'},
         body: JSON.stringify({ token, height, dominant_leg, main_position, secundary_position, property_of, actual_team })
+    })
+    const data = await ret.json()
+    return data
+}
+
+export const insertSkills = async (token, skill) => {
+    debugger
+    const ret = await fetch('http://localhost:8080/api/player/insertskill', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'},
+        body: JSON.stringify({ token, skill })
     })
     const data = await ret.json()
     return data
@@ -84,6 +94,15 @@ export const meVideos = async (token) => {
     return data
 }
 
+export const meSkills = async (token) => {
+    const ret = await fetch('http://localhost:8080/api/player/meSkills', {
+        method: 'GET',
+        headers: { 'Authorization': 'Bearer ' + token},
+    })
+    const data = await ret.json()
+    return data
+}
+
 export const filterByClub = async (club) => {
     const ret = await fetch('http://localhost:8080/api/players/filterByClub?'  + new URLSearchParams({
         club,
@@ -112,6 +131,14 @@ export const filterByAge = async (age) => {
     const ret = await fetch('http://localhost:8080/api/players/filterByAge?'  + new URLSearchParams({
         age,
     })) 
+    const data = await ret.json()
+    return data
+}
+
+export const playerProfile = async () => {
+    const ret = await fetch('http://localhost:8080/api/users/playerProfile?', {
+        method: 'GET',
+    })
     const data = await ret.json()
     return data
 }

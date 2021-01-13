@@ -1,13 +1,19 @@
 import { useState, useEffect, Fragment, useCallback } from 'react';
 import { useSetUser, useUser } from './UserContext';
 import './Profile.css';
-import { useMePersonalData, meVideos, meTecnicalData, updateTecnicalData, useClubsList } from './api';
+import { playerProfile } from './api';
 import { act } from 'react-dom/test-utils';
 
 
 function Profile() {
 
- 
+    const { user: me, token } = useUser();
+    const [ playerProfile, setPlayerProfile] = useState([])
+
+    useEffect(() => {
+        playerProfile.then((dataPlayer)=> setPlayerProfile(dataPlayer))
+    }, [])
+
     return (
         <div className="player-profile">
             <h2>Mi Perfil</h2>
@@ -20,28 +26,28 @@ function Profile() {
             </label>
                 <div className="personal_data">Datos Personales
                 <label>Nombre:
-                    <span>{me.name}</span>
+                    <span></span>
                 </label>
                 <label>Apellidos:
-                    <span>{me.last_name}</span>
+                    <span></span>
                 </label>
                 <label>NIF:
-                    <span>{me.nif}</span>
+                    <span></span>
                 </label>
                 <label>Email:
-                    <span>{me.email}</span>
+                    <span></span>
                 </label>
                 <label>Fecha de Nacimiento:
-                    <span>{me.birthdate}</span>
+                    <span></span>
                 </label>
                 <label>Edad:
-                    <span>{me.age}</span>
+                    <span></span>
                 </label>
                 <label>Teléfono:
-                    <span>{me.phone}</span>
+                    <span></span>
                 </label>
                 <label>País:
-                    <span>{me.country}</span>
+                    <span></span>
                 </label>
                 <button>Actualizar datos personales</button>
                 </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect, Fragment, useCallback } from 'react';
 import { useSetUser, useUser } from './UserContext';
 import './Profile.css';
-import { useMePersonalData, meVideos, meTecnicalData, updateTecnicalData, useClubsList } from './api';
+import { useMePersonalData, meVideos, meTecnicalData, updateTecnicalData, useClubsList, insertSkills, useSkillsList, meSkills } from './api';
 import { act } from 'react-dom/test-utils';
 
 
@@ -12,8 +12,10 @@ function Profile() {
     const setMe = useSetUser()
 
     const clubs = useClubsList()
+    const skills = useSkillsList()
 
     const [videos, setVideos ] = useState([])
+    const [playerSkills, setPlayerSkills] = useState([])
     const [data, setData ] = useState({})
 
     // const [ tecnicalData, setTecnicalData ] = useState({})
@@ -27,6 +29,7 @@ function Profile() {
     const [ secundaryPosition, setSecundaryPosition ] = useState(data.secundary_position || "")
     const [ propertyOf, setPropertyOf ] = useState(data.property_of || "")
     const [ actualTeam, setActualTeam ] = useState(data.actual_team || "")
+    const [ skill, setSkill] = useState(data.skill);
 
     const handleTecnicalData = useCallback((e) => {
         e.preventDefault()
@@ -34,11 +37,21 @@ function Profile() {
         updateTecnicalData(token, height, dominantLeg, mainPosition, secundaryPosition, propertyOf, actualTeam)
     },[height,dominantLeg,mainPosition,secundaryPosition,propertyOf,actualTeam])
 
+
+    const handleSkills = useCallback((e) => {
+        e.preventDefault()
+
+        insertSkills(token, skill)
+    },[skill])
+
     useEffect(() => {
           meVideos(token).then((multimedia) => setVideos(multimedia))
-          
+
+          meSkills(token).then((skills) => setPlayerSkills(skills))
+
           if(me.rol === 'player'){
             meTecnicalData(token, me.id).then((tecnicalData) => setData(tecnicalData))
+            
           }
           
       }, [])
@@ -100,6 +113,7 @@ function Profile() {
                     <form onSubmit={handleTecnicalData}>
                         <label>Altura:
                             <input value={height} onChange={e => setHeight(e.target.value)}></input>
+                            <span>cm</span>
                         </label>
                         <label>Pierna dominante:
                             <input value={dominantLeg} onChange={e => setDominantLeg(e.target.value)}></input>
@@ -132,6 +146,25 @@ function Profile() {
                     </form>
                
                 </div>
+                <div>Habilidades
+                    {playerSkills && playerSkills.map((playerSkill)=> 
+                        <div key={playerSkill.id}>
+                            <span>{playerSkill.skill}</span>
+                        </div>
+                    )}
+                </div>
+                <form onSubmit={handleSkills}>
+                    <label>Insertar Skill
+                        <select className="insert_skill" name="skill" value={skill} onChange={e => setSkill(e.target.value)}>
+                            {skills && skills.map(skill =>
+                                <option key={skill.id} value={skill.skill}>
+                                    {skill.skill}
+                                </option>
+                            )}       
+                        </select>            
+                    </label>
+                    <button type="submit">Insertar Skill</button>
+                </form>
                 <div className="videos">Vídeos
                     <div>
                         {videos && videos.map((video)=> 

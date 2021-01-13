@@ -78,6 +78,8 @@ async function insertPlayerSkill (req, res) {
         const { id } = req.auth;
         const { skill } = req.body;
 
+        console.log(skill)
+
         const [ player ] = await database.pool.query('SELECT id FROM players WHERE id_user = ?', id);
 
         if (!player || ! player.length) {
@@ -161,10 +163,42 @@ async function updatePropertyClub (req, res) {
     }
 }
 
+async function getMeSkills(req, res) {
+    try {
+
+        const { id } = req.auth;
+
+        const [ player ] = await database.pool.query('SELECT id FROM players WHERE id_user = ?', id);
+
+        if (!player || ! player.length) {
+            const err = new Error('No existe el jugador');
+            err.code = 404;
+            throw err;
+        }
+
+        const [ skills ]  = await database.pool.query(`
+        SELECT DISTINCT s.* 
+        FROM players_skills ps
+        JOIN skills s on s.id = ps.id_skill
+        WHERE id_player = ?`, player[0].id)
+        
+        res.status(200);
+        res.send(skills)
+
+
+    }catch(err) {
+
+        res.status(err.httpCode || 500);
+        res.send({ error: err.message});
+    }
+}
+
+
 module.exports = {
     updatePlayer,
     insertPlayerSkill,
     updateActualClub,
     updatePropertyClub,
     getTecnicalDataPlayer,
+    getMeSkills,
 }

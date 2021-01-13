@@ -4,10 +4,11 @@ import Footer from './Footer'
 import Login from './Login';
 import Register from './Register';
 import Profile from './Profile';
+import PlayerProfile from './PlayerProfile'
 import { useState, useMemo, useEffect } from 'react'
 import { Switch, Route, Link, useLocation } from 'react-router-dom';
 import { useUser } from './UserContext';
-import { useClubsList, useSkillsList, useUsersFilterList, filterByClub, filterBySkill, filterByPosition, filterByAge } from './api';
+import { useClubsList, useSkillsList, useUsersFilterList, filterByClub, filterBySkill, filterByPosition, filterByAge, playerProfile } from './api';
 
 
 function App() {

@@ -38,7 +38,7 @@ app.put('/api/user/update', validateAuthorization, usersController.updateUser);
 app.put('/api/users/insertCountry', validateAuthorization, usersController.insertCountry)
 // app.put('/api/user/update', validateAuthorization, upload.single('perfil_photo'), usersController.updateUser);
 app.delete('/api/users/delete', validateAuthorization, usersController.deleteUser);
-app.get('/api/users/:userId', usersController.getUserData);
+app.get('/api/users/playerProfile', usersController.getUserData);
 
 // Players
 
@@ -46,6 +46,7 @@ app.get('/api/player/tecnicalData', validateAuthorization, playersController.get
 app.put('/api/player/update', validateAuthorization, playersController.updatePlayer)
 app.put('/api/player/updateActualClub', validateAuthorization, playersController.updateActualClub)
 app.put('/api/player/updatePropertyClub', validateAuthorization, playersController.updatePropertyClub)
+app.get('/api/player/meSkills', validateAuthorization, playersController.getMeSkills)
 
 // Managers
 
