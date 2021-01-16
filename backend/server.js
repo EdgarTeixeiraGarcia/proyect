@@ -24,6 +24,7 @@ const { HTTP_PORT } = process.env;
 
 const app = express();
 
+app.use('/static', express.static('uploads'));
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -34,9 +35,9 @@ app.get('/api/users', usersController.getUsers);
 app.get('/api/users/me', validateAuthorization, usersController.getMe);
 app.post('/api/users/register', usersController.register);
 app.post('/api/users/login', usersController.login);
-app.put('/api/user/update', validateAuthorization, usersController.updateUser);
+// app.put('/api/user/update', validateAuthorization, usersController.updateUser);
 app.put('/api/users/insertCountry', validateAuthorization, usersController.insertCountry)
-// app.put('/api/user/update', validateAuthorization, upload.single('perfil_photo'), usersController.updateUser);
+app.put('/api/user/update', validateAuthorization, upload.single('image'), usersController.updateUser);
 app.delete('/api/users/delete', validateAuthorization, usersController.deleteUser);
 app.get('/api/users/playerProfile', usersController.getUserData);
 

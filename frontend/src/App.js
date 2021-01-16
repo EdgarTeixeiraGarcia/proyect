@@ -26,6 +26,10 @@ function App() {
   const filters = useMemo(() => new URLSearchParams(location.search), [location])
 
   const [data , setData ] = useState([])
+  const [showClubs, setShowClubs] = useState(false)
+  const [showSkills, setShowSkills] = useState(false)
+  const [showAge, setShowAge] = useState(false)
+  const [showPosition, setShowPosition] = useState(false)
 
   useEffect(() => {
     if (filters.has('club')) {
@@ -80,47 +84,59 @@ function App() {
           <Route path="/">
             <aside className="filter">
               <h3>Filtros</h3>
-              <h4 className="filter_name">CLUB</h4>
-              <Acordeon>
-                {clubs && clubs.map(club => 
+              <h4 className="filter_name" onClick={() => setShowClubs(!showClubs)}>CLUB
+              {showClubs ? 'Ocultar' : 'Mostrar'}</h4>
+              {showClubs &&
+              <div className="filter-data">
+                 {clubs && clubs.map(club => 
                   <Link to={`/?club=${club.club_name}`} key={club.id}>
-                    <span>{club.club_name}</span>
+                    <span className="filter-results">{club.club_name}</span>
                   </Link>
                 )}
-                </Acordeon>
-              <h4 className="filter_name">HABILIDADES</h4>
-                <Acordeon>
-                  {skills && skills.map(skill => 
+              </div>
+              }  
+              <h4 className="filter_name" onClick={() => setShowSkills(!showSkills)}>HABILIDADES
+              {showSkills ? 'Mostrar menos' : 'Mostrar más'}</h4>
+              {showSkills && 
+              <div className="filter-data">
+                {skills && skills.map(skill => 
                       <Link to={`/?skill=${skill.skill}`} key={skill.id}>
                         <span>{skill.skill}</span>
                       </Link>
                   )}
-                </Acordeon>
-              <h4 className="filter_name">EDAD</h4>
-              <Acordeon>
-              {ages && ages.map(age => 
+              </div>
+              } 
+              <h4 className="filter_name" onClick={() => setShowAge(!showAge)}>EDAD
+              {showAge ? 'Mostrar menos' : 'Mostrar más'}</h4>
+              {showAge &&
+              <div className="filter-data">
+                {ages && ages.map(age => 
                     <Link to={`/?age=${age}`} key={age}>
                       <span>{age}</span>
                     </Link>
                 )}
-              </Acordeon>
-              <h4 className="filter_name">POSICION</h4>
-              <Acordeon>
-              {positions && positions.map(position => 
+              </div>
+              }
+              <h4 className="filter_name" onClick={() => setShowPosition(!showPosition)}>POSICION
+              {showPosition ? 'Mostrar menos' : 'Mostrar más'}</h4>
+              {showPosition &&
+              <div className="filter-data">
+                {positions && positions.map(position => 
                     <Link to={`/?position=${position}`} key={position}>
                       <span>{position}</span>
                     </Link>
                 )}
-              </Acordeon>
+              </div>
+              }
               </aside>
               <div className="welcome">
                 {data?.length > 0 ? 
                   (data.map(player => (<Link to={`/playerProfile?id=${player.id}`} key={player.id}>
-                    <div>
+                    <div className="filter-player">
                       <span>{player.name}</span>
                       <span>{player.age}</span>
                       <span>{player.country}</span>
-                    </div></Link>))):(<span>Bienvenidos</span>)
+                    </div></Link>))):(<span className="welcome-body">Bienvenidos</span>)
                 }
               </div>
           </Route>

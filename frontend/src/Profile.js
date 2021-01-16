@@ -1,13 +1,15 @@
-import { useState, useEffect, Fragment, useCallback } from 'react';
+import { useState, useEffect, Fragment, useCallback, useRef } from 'react';
 import { useSetUser, useUser } from './UserContext';
 import './Profile.css';
-import { useMePersonalData, meVideos, meTecnicalData, updateTecnicalData, useClubsList, insertSkills, useSkillsList, meSkills } from './api';
+import { mePersonalData, meVideos, meTecnicalData, updateTecnicalData, useClubsList, insertSkills, useSkillsList, meSkills, uploadVideo, deleteUser } from './api';
+
 import { act } from 'react-dom/test-utils';
 
 
 function Profile() {
 
     const { user: me, token } = useUser();
+    const theInput = useRef();
     console.log(me);
     const setMe = useSetUser()
 
@@ -17,6 +19,7 @@ function Profile() {
     const [videos, setVideos ] = useState([])
     const [playerSkills, setPlayerSkills] = useState([])
     const [data, setData ] = useState({})
+    const [preview, setPreview ] = useState(me.perfil_photo)
 
     // const [ tecnicalData, setTecnicalData ] = useState({})
 
@@ -30,6 +33,7 @@ function Profile() {
     const [ propertyOf, setPropertyOf ] = useState(data.property_of || "")
     const [ actualTeam, setActualTeam ] = useState(data.actual_team || "")
     const [ skill, setSkill] = useState(data.skill);
+    const [ content, setContent] = useState(data.content);
 
     const handleTecnicalData = useCallback((e) => {
         e.preventDefault()
@@ -37,12 +41,40 @@ function Profile() {
         updateTecnicalData(token, height, dominantLeg, mainPosition, secundaryPosition, propertyOf, actualTeam)
     },[height,dominantLeg,mainPosition,secundaryPosition,propertyOf,actualTeam])
 
-
+    const handleClick = e => {
+        theInput.current.click()
+    }
+    
+    const handlePicture = e => {
+        const reader = new FileReader()
+        reader.onloadend = () => setPreview(reader.result)
+        reader.readAsDataURL(e.target.files[0])
+    }
+    
+    const handleSubmit = async e => {
+        e.preventDefault()
+        const image = e.target.image.files[0];
+        const data = await mePersonalData(token, phone, image )
+        if (data) {
+            return setMe({token, user:data})
+        }
+    }
+    
     const handleSkills = useCallback((e) => {
         e.preventDefault()
 
         insertSkills(token, skill)
+        meSkills(token).then((skills) => setPlayerSkills(skills))
     },[skill])
+
+
+    const handleVideos = useCallback((e) => {
+        e.preventDefault()
+
+        uploadVideo(token, content)
+        meVideos(token).then((multimedia) => setVideos(multimedia))
+    },[content])
+
 
     useEffect(() => {
           meVideos(token).then((multimedia) => setVideos(multimedia))
@@ -65,21 +97,23 @@ function Profile() {
         setActualTeam(data.actual_team)
     }, [data])
 
+
+    const style = preview && {backgroundImage: 'url(' + preview + ')'}
     
 
 
     return (
+        
         <div className="profile">
             <h2>Mi Perfil</h2>
-            <label className="foto_perfil">
-               <span>Foto de Perfil</span> 
-               {/* <div className="value">
-                <div className="foto" style=""></div>
-                <input name="foto" type="file" accept="image/"></input>
-               </div> */}
-            </label>
-            <form>
+            
+            <form onSubmit={handleSubmit}>
                 <div className="personal_data">Datos Personales
+                <span>Foto de Perfil</span> 
+                <div className="value">
+                    <div className="photo" style={style} value={preview} onClick={handleClick}></div>
+                    <input className="hide" name="image" type="file" accept="image/*" onChange={handlePicture} ref={theInput}></input>
+                </div>
                 <label>Nombre:
                     <span>{me.name}</span>
                 </label>
@@ -99,7 +133,7 @@ function Profile() {
                     <span>{me.age}</span>
                 </label>
                 <label>Teléfono:
-                    <span>{me.phone}</span>
+                    <input value={phone} onChange={e => setPhone(e.target.value)}></input>
                 </label>
                 <label>País:
                     <span>{me.country}</span>
@@ -156,11 +190,15 @@ function Profile() {
                 <form onSubmit={handleSkills}>
                     <label>Insertar Skill
                         <select className="insert_skill" name="skill" value={skill} onChange={e => setSkill(e.target.value)}>
-                            {skills && skills.map(skill =>
-                                <option key={skill.id} value={skill.skill}>
-                                    {skill.skill}
-                                </option>
-                            )}       
+                            {skills && skills.map(skill =>{
+                                if(playerSkills.filter((playerSkill)=> playerSkill.id === skill.id).length === 0){
+                                    return (
+                                        <option key={skill.id} value={skill.skill}>
+                                            {skill.skill}
+                                        </option>
+                                    )
+                                } 
+                            })}       
                         </select>            
                     </label>
                     <button type="submit">Insertar Skill</button>
@@ -173,8 +211,14 @@ function Profile() {
                                 </span>
                         )}
                     </div>
-                <button>Subir video</button>
+                    <form onSubmit={handleVideos}>
+                        <label>Publicar Video
+                            <input value={content} onChange={e => setContent(e.target.value)}></input>
+                        </label>
+                        <button type="submit">Publicar Video</button>
+                </form>
                 </div>
+                
             </Fragment>
            
             ): (

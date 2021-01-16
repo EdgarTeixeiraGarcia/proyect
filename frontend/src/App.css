@@ -2,6 +2,10 @@ html, #root, body{
   height: 100%;
   width: 100%;
 }
+body {
+  display: flex;
+  flex-grow: 1;
+}
 
 .App {
   display: flex;
@@ -23,6 +27,7 @@ html, #root, body{
   background-repeat: no-repeat;
   /* position: relative; */
   flex-grow: 1;
+  flex-direction: row;
 }
 
 .filter{
@@ -33,13 +38,23 @@ html, #root, body{
   margin-top: 10px;
   margin-left: 10px;
   margin-bottom: 10px;
-  width: 10%;
+  width: 25%;
   background-color:rgb(255, 255, 255, 0.2);
 }
 
 h3 {
   text-align: center;
   width: 100%;
+}
+
+.filter-data {
+  display: flex;
+  flex-direction: column;
+}
+
+.acordeon {
+  display: flex;
+  flex-direction: column;
 }
 
 .filter_name {
@@ -56,9 +71,32 @@ span {
 }
 
 .welcome {
-  background-color: white;
-  color: white;
+  background-color: rgb(202, 199, 199);
+  color: black;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 40%;
 }
+
+.welcome a {
+  width: 33%;
+  border: 1px solid black;
+  text-emphasis: none;
+  margin-top: 4px;
+}
+
+.filter-player {
+  display: flex;
+  background-color: teal;
+  margin: 14px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 50%;
+  border-radius: 8px;
+}
+
 
 .footer {
   position: relative;

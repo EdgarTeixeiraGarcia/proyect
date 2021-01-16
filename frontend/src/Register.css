@@ -2,8 +2,9 @@
     
     height: 90%;
     width: 40%;
-    margin-left: 10px;
-    margin-top: 10px;
+    /* margin-left: 10px;
+    margin-top: 10px; */
+    margin: auto;
 }
 
 /* .label {
@@ -15,10 +16,13 @@
     flex-wrap: wrap;
     border: 1px solid black;
     border-radius: 8px;
+    margin: auto;
+    align-items: center;
+    justify-content: space-around;
 }
 
-label {
-    margin-left: 30px;
+.label-register {
+    /* margin-left: 20px; */
 }
 
 .input-register {
@@ -60,3 +64,4 @@ button {
     font-size: 1.2rem;
     align-items: center;
 }
+

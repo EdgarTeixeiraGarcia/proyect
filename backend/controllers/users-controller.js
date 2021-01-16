@@ -1,30 +1,12 @@
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const uuid = require('uuid');
 const sgMail = require('@sendgrid/mail');
 
-const { database } = require('../infrastructure');
-const { playersController } = require('.');
-
-// async function sendEmail({ email, title, content}) {
-
-//     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    
-//         await sgMail.send({
-//             to: email,
-//             from: 'edgar_wiman5@hotmail.com',
-//             subject: title,
-//             text: content,
-//             html: `<div>
-//                 <h1>Bienvenido a Nombre pagina</h1>
-//                 <p>${content}</p>
-//             </div>`
-//         });
-    
-// }
+const { database } = require('../infrastructure');  
 
 // CREAMOS LA FUNCIÓN PARA OBTENER LOS USUARIOS DE LA BBDD
 
@@ -55,11 +37,12 @@ async function getMe(req, res) {
             throw err;
         }
 
-        // sendEmail({
-        //     email: 'edgar_wiman5@hotmail.com',
-        //     title: 'Bienvenido a Nombre de la pagina',
-        //     content: 'Gracias por confiar en nosotros'
-        // });
+        // await sendEmail({
+        //     email: "edgar_wiman5@hotmail.com",
+        //     title: 'Bienvenido',
+        //     content: `Bienvenido a la pagina web:`
+        //   });
+      
 
         res.send(me);
 
@@ -185,12 +168,6 @@ async function register(req, res) {
 
         const [ user ] = await database.pool.query('SELECT u.*,c.country FROM users u JOIN countries c ON u.country = c.id WHERE u.email = ?', email)
 
-        // sendEmail({
-        //     email: email,
-        //     title: 'Bienvenido a Nombre de la pagina',
-        //     content: 'Gracias por confiar en nosotros'
-        // });
-
         const tokenPayload = { id: user.id, rol: user.rol};
 
         const token = jwt.sign(
@@ -198,6 +175,25 @@ async function register(req, res) {
             process.env.JWT_SECRET,
             { expiresIn: '14d'},
         );
+
+
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+        const msg = {
+          to: email, // Change to your recipient
+          from: 'edgar_wiman5@hotmail.com', // Change to your verified sender
+          subject: 'Bienvenid@',
+          text: 'Bienvenid@',
+          html: '<strong>Te damos la Bienvenida, Enséñanos tus habilidades</strong>',
+        }
+        sgMail
+          .send(msg)
+          .then(() => {
+            console.log('Email sent')
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+
 
         res.status(201);
         res.send ({ 
@@ -281,7 +277,6 @@ async function updateUser(req, res) {
 
         const {
             phone,
-            perfil_photo,
         } = req.body;
 
         const { id } = req.auth;
@@ -294,15 +289,28 @@ async function updateUser(req, res) {
             throw err;
         }
 
-        const updateUserQuery = 'UPDATE users SET phone = ?, perfil_photo = ? WHERE id= ?'
-        await database.pool.query(updateUserQuery, [phone, perfil_photo, id])
+        let imageName;
+        
+        if (req.file) {
+            
+            imageName = ('user-' + id + '-' + req.file.originalname);
+            await fs.writeFile(path.join('uploads', imageName), req.file.buffer);
+           imageName = ('http://localhost:8080/static/' + imageName);
+       
+        }
+
+        if (imageName) {
+            await database.pool.query('UPDATE users SET phone = ?, perfil_photo = ? WHERE id= ?',[phone, imageName, id] )
+        } else {
+            await database.pool.query('UPDATE users SET phone = ?  WHERE id= ?',[phone, id] )
+
+        }
+
+        console.log(id, phone, imageName )
 
         const [ userUpdated ] =  await database.pool.query('SELECT * FROM users WHERE id = ?', id)
         
-        // if (req.file) {
-        //     fs.writeFileSync(path.join('uploads', 'user-' + id + '.jpg'), req.file.buffer)
-        //     user.perfil_photo = 'http://localhost:8080/static/user' + id + '.jpg'
-        // }
+       
 
         res.status(200);
         res.send(userUpdated[0]);
@@ -384,7 +392,7 @@ async function getUserData (req, res) {
         console.log(id)
 
         const [playerData] = await database.pool.query(`
-        SELECT u.*,p.*,c.country,cl_actual.club_name,cl_propiedad.club_name,s.skill,mc.*,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age
+        SELECT u.*,p.*,c.country,cl_actual.*,cl_propiedad.*,s.skill,mc.*,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age
         FROM users u 
         LEFT JOIN countries c ON u.country = c.id 
         LEFT JOIN players p ON u.id = p.id_user
@@ -394,6 +402,12 @@ async function getUserData (req, res) {
         LEFT JOIN skills s ON s.id = ps.id_skill
         LEFT JOIN multimedia_contents mc ON p.id = mc.id_player
         WHERE p.id_user = ?`, id)
+
+        const [nameActualTeam] = await database.pool.query(`
+        SELECT club_name from clubs WHERE id = ?`,playerData[0].actual_team)
+
+        const [namePropertyOf] = await database.pool.query(`
+        SELECT club_name from clubs WHERE id = ?`,playerData[0].property_of)
 
         let skills = []
         let videos = []
@@ -429,7 +443,7 @@ async function getUserData (req, res) {
         // WHERE u.id = ?;`, userId)
 
         res.status(200);
-        res.send({...playerData[0], skill:skills, content:videos});
+        res.send({...playerData[0], skill:skills, content:videos, nameActualTeam: nameActualTeam[0].club_name, namePropertyOf: namePropertyOf[0].club_name});
 
     }catch(err) {
 

@@ -37,15 +37,29 @@ export const updateTecnicalData = async (token, height, dominant_leg, main_posit
 }
 
 export const insertSkills = async (token, skill) => {
-    debugger
     const ret = await fetch('http://localhost:8080/api/player/insertskill', {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'},
         body: JSON.stringify({ token, skill })
     })
-    const data = await ret.json()
-    return data
 }
+
+export const uploadVideo = async (token, content) => {
+    const ret = await fetch('http://localhost:8080/api/videos/upload', {
+        method: 'PUT',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'},
+        body: JSON.stringify({ token, content })
+    })
+}
+
+export const deleteUser = async (token) => {
+    const ret = await fetch('http://localhost:8080/api/users/delete', {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'},
+        body: JSON.stringify({ token })
+    })
+}
+
 
 export const meTecnicalData = async (token, id)  => {
 
@@ -67,11 +81,12 @@ export const playerData = async (token, id)  => {
     return data
 }
 
-export const useMePersonalData = async (token, phone, perfil_photo)  => {
+export const mePersonalData = async (token, phone, perfil_photo)  => {
 
     const fd = new FormData()
     fd.append('phone', phone)
-    fd.append('perfil_photo', perfil_photo)
+    fd.append('image', perfil_photo)
+    
 
     const ret = await fetch('http://localhost:8080/api/user/update', {
         method: 'PUT',

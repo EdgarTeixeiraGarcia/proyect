@@ -9,7 +9,7 @@ function Acordeon({ children }) {
         {show ? 'Mostrar menos' : 'Mostrar más'}
       </button>
       {show &&
-        <div>
+        <div className="acordeon-results">
           {children}
         </div>
       }
@@ -18,3 +18,12 @@ function Acordeon({ children }) {
 }
 
 export default Acordeon;
+
+{/* <h4 className="filter_name">CLUB</h4>
+              <Acordeon>
+                {clubs && clubs.map(club => 
+                  <Link to={`/?club=${club.club_name}`} key={club.id}>
+                    <span className="filter-results">{club.club_name}</span>
+                  </Link>
+                )}
+                </Acordeon> */}

@@ -16,11 +16,11 @@ function Profile() {
     const [data , setData ] = useState([])
     
     
-    const dataProfile = playerProfile()
-    console.log(dataProfile)
+    // const dataProfile = playerProfile()
+    // console.log(dataProfile)
 
     useEffect(() => {
-        if (filters.has('id')) {
+        if (filters.has('id') && filters.get('id')) {
           console.log(filters.get('id'))
           playerProfile(filters.get('id')).then((datos) => setData(datos))
         }    
@@ -28,6 +28,7 @@ function Profile() {
 
     return (
         <div className="player-profile">
+            <body>
             <label className="foto_perfil">
                <span>Foto de Perfil</span> 
                {/* <div className="value">
@@ -75,10 +76,10 @@ function Profile() {
                     <span>{data.secundary_position}</span>
                 </label>
                 <label>Equipo Actual:
-                    <span>{data.actual_team}</span>
+                    <span>{data.nameActualTeam}</span>
                 </label>
                 <label>Propiedad de:
-                    <span>{data.property_of}</span>
+                    <span>{data.namePropertyOf}</span>
                 </label>
                 </div>
                 <div>Habilidades
@@ -100,6 +101,8 @@ function Profile() {
             {me.rol==='manager' && (
               <button>Enviar solicitud de contratacion</button>
             )}
+            </body> 
+          
             
         </div>
     );

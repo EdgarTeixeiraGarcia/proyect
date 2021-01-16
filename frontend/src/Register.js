@@ -35,22 +35,22 @@ function Register() {
     return (
         <div className="register">
             <form className="form-register" onSubmit={handleSubmit}>
-                <label>Nombre
+                <label className="label-register">Nombre
                     <input className="input-register" value={name} onChange={e => setName(e.target.value)} placeholder="Nombre"/>
                 </label>
-                <label>Apellido
+                <label className="label-register">Apellido
                     <input className="input-register" value={last_name} onChange={e => setLast_name(e.target.value)} placeholder="Apellido"/>
                 </label>
-                <label>NIF
+                <label className="label-register">NIF
                     <input className="input-register" value={nif} onChange={e => setNif(e.target.value)} placeholder="NIF"/>
                 </label>
-                <label>Fecha de Nacimiento:
+                <label className="label-register">Fecha de Nacimiento:
                     <input type="date" className="input-register" value={birthdate} onChange={e => setBirthdate(e.target.value)} placeholder="Fecha de Nacimiento"/>
                 </label>
                 <label className="email">Email
                     <input className="input-register" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email"/>
                 </label>
-                <label>País
+                <label className="label-register">País
                     {/* <input className="input-register" value={country} onChange={e => setCountry(e.target.value)} placeholder="Country"/> */}
                     <select className="countries-list" name="country" value={country} onChange={e => setCountry(e.target.value)}>
                     {countries && countries.map(country => 
@@ -60,10 +60,10 @@ function Register() {
                 )}
                     </select>
                 </label>
-                <label>Contraseña
+                <label className="label-register">Contraseña
                     <input  type="password" className="input-register" value={password} onChange={e => setPassword(e.target.value)} placeholder="Contraseña"/>
                 </label>
-                <label>Repite la contraseña
+                <label className="label-register">Repite la contraseña
                     <input type="password" className="input-register" value={repeatedPassword} onChange={e => setRepeatedPassword(e.target.value)} placeholder="Repite la contraseña"/>
                 </label>
                 <label className="tipo_cuenta">Tipo de cuenta
