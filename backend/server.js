@@ -11,6 +11,7 @@ const {
     countriesController,
     clubsController,
     multimediaController,
+    managersController,
 } = require('./controllers');
 
 const { validateAuthorization } = require ('./middlewares');
@@ -50,6 +51,9 @@ app.put('/api/player/updatePropertyClub', validateAuthorization, playersControll
 app.get('/api/player/meSkills', validateAuthorization, playersController.getMeSkills)
 
 // Managers
+
+app.get('/api/manager/agency', validateAuthorization, managersController.getAgencyManager)
+app.put('/api/manager/update', validateAuthorization, managersController.updateManager)
 
 // Skills
 app.get('/api/skills', skillsController.getSkills)

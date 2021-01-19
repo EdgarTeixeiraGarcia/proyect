@@ -1,73 +1,61 @@
 import './App.css';
 import Header from './Header';
-import Acordeon from './Acordeon';
-import Footer from './Footer'
+import Footer from './Footer';
 import Login from './Login';
 import Register from './Register';
 import Profile from './Profile';
+import Filter from './Filter';
 import PlayerProfile from './PlayerProfile'
-import { useState, useMemo, useEffect } from 'react'
-import { Switch, Route, Link, useLocation } from 'react-router-dom';
-import { useUser } from './UserContext';
-import { useClubsList, useSkillsList, useUsersFilterList, filterByClub, filterBySkill, filterByPosition, filterByAge, playerProfile } from './api';
+// import { useState, useMemo, useEffect } from 'react'
+import { Switch, Route } from 'react-router-dom';
+// import { useUser } from './UserContext';
+// import { useClubsList, useSkillsList, useUsersFilterList, filterByClub, filterBySkill, filterByPosition, filterByAge, playerProfile } from './api';
 
 
 function App() {
 
-  const me = useUser()
+  // const me = useUser()
 
-  const ages = [14,15,16,17,18,19,20,21,22,23,24,25]
-  const positions = ['Portero', 'Defensa', 'Centrocampista', 'Delantero']
+  // const ages = [14,15,16,17,18,19,20,21,22,23,24,25]
+  // const positions = ['Portero', 'Defensa', 'Centrocampista', 'Delantero']
   
-  const clubs = useClubsList()
-  const skills = useSkillsList()
-  const usersSkills = useUsersFilterList()
-  const location = useLocation()
-  const filters = useMemo(() => new URLSearchParams(location.search), [location])
+  // const clubs = useClubsList()
+  // const skills = useSkillsList()
+  // const usersSkills = useUsersFilterList()
+  // const location = useLocation()
+  // const filters = useMemo(() => new URLSearchParams(location.search), [location])
 
-  const [data , setData ] = useState([])
-  const [showClubs, setShowClubs] = useState(false)
-  const [showSkills, setShowSkills] = useState(false)
-  const [showAge, setShowAge] = useState(false)
-  const [showPosition, setShowPosition] = useState(false)
+  // const [data , setData ] = useState([])
+  // const [showClubs, setShowClubs] = useState(false)
+  // const [showSkills, setShowSkills] = useState(false)
+  // const [showAge, setShowAge] = useState(false)
+  // const [showPosition, setShowPosition] = useState(false)
 
-  useEffect(() => {
-    if (filters.has('club')) {
+  // useEffect(() => {
+  //   if (filters.has('club')) {
 
-      // console.log(filters.get('club'))
-      filterByClub(filters.get('club')).then((datos) => setData(datos))
-    }
-    if (filters.has('skill')) {
-      console.log(filters.get('skill'))
-      filterBySkill(filters.get('skill')).then((datos) => setData(datos))
-    } 
-    if (filters.has('age')) {
-      console.log(filters.get('age'))
-      filterByAge(filters.get('age')).then((datos) => setData(datos))
-    } 
-    if (filters.has('position')) {
-      console.log(filters.get('position'))
-      filterByPosition(filters.get('position')).then((datos) => setData(datos))
-    }
-    // if (filters.has('id')) {
-    //   console.log(filters.get('id'))
-    //   playerProfile(filters.get('id')).then((datos) => setData(datos))
-    // }
+  //     filterByClub(filters.get('club')).then((datos) => setData(datos))
+  //   }
+  //   if (filters.has('skill')) {
+     
+  //     filterBySkill(filters.get('skill')).then((datos) => setData(datos))
+  //   } 
+  //   if (filters.has('age')) {
+     
+  //     filterByAge(filters.get('age')).then((datos) => setData(datos))
+  //   } 
+  //   if (filters.has('position')) {
+      
+  //     filterByPosition(filters.get('position')).then((datos) => setData(datos))
+  //   }
+  // }, [filters])
 
-    
-  }, [filters])
-
-  // console.log(filters.get('club'))
+ 
 
   return (
     <div className="App">
       <header className="header"><Header /></header>
       <body className="body">
-          {/* <aside className="filter">
-            <h3>Filtros</h3>
-            <h4 className="filter_name">CLUB</h4>
-          </aside> */}
-        {/* {me ? <Profile /> : <Login/>} */}
         <Switch>
         <Route path="/playerProfile">
             <PlayerProfile />
@@ -82,7 +70,8 @@ function App() {
             <Login />
           </Route>
           <Route path="/">
-            <aside className="filter">
+            <Filter />
+            {/* <aside className="filter">
               <h3>Filtros</h3>
               <h4 className="filter_name" onClick={() => setShowClubs(!showClubs)}>CLUB
               {showClubs ? 'Ocultar' : 'Mostrar'}</h4>
@@ -134,11 +123,11 @@ function App() {
                   (data.map(player => (<Link to={`/playerProfile?id=${player.id}`} key={player.id}>
                     <div className="filter-player">
                       <span>{player.name}</span>
-                      <span>{player.age}</span>
+                      <div className="photo-filter" style={{ backgroundImage: 'url(' + player.perfil_photo + ')' }}></div>
                       <span>{player.country}</span>
                     </div></Link>))):(<span className="welcome-body">Bienvenidos</span>)
                 }
-              </div>
+              </div> */}
           </Route>
         </Switch>
       </body>
@@ -148,3 +137,6 @@ function App() {
 }
 
 export default App;
+
+{/* <div className="photo" style={style} value={preview} onClick={handleClick}></div> */}
+{/* <input className="hide" name="image" type="file" accept="image/*" onChange={handlePicture} ref={theInput}></input> */}

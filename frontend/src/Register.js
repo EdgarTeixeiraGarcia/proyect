@@ -47,7 +47,7 @@ function Register() {
                 <label className="label-register">Fecha de Nacimiento:
                     <input type="date" className="input-register" value={birthdate} onChange={e => setBirthdate(e.target.value)} placeholder="Fecha de Nacimiento"/>
                 </label>
-                <label className="email">Email
+                <label className="label-register">Email
                     <input className="input-register" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email"/>
                 </label>
                 <label className="label-register">País
@@ -66,18 +66,18 @@ function Register() {
                 <label className="label-register">Repite la contraseña
                     <input type="password" className="input-register" value={repeatedPassword} onChange={e => setRepeatedPassword(e.target.value)} placeholder="Repite la contraseña"/>
                 </label>
-                <label className="tipo_cuenta">Tipo de cuenta
+                <label className="acount-type">Tipo de cuenta:
                     <input  type="radio" className="input-rol" value="player" name="rol" onClick={e => setRol(e.target.value)} />
-                    <label for="player" className="input-register">Futbolista</label>
+                    <label for="player" className="label-acount-type">Futbolista</label>
                     <input  type="radio" className="input-rol" value="manager" name="rol" onClick={e => setRol(e.target.value)} />
-                    <label for="manager" className="input-register">Manager</label>
+                    <label for="manager" className="label-acount-type">Manager</label>
                 </label>
                 {isError &&
                     <div className="error"> 
                         Error al registrarse
                     </div>
                 }
-                <button type="submit">Crear Cuenta</button>
+                <button type="submit" className="register-button">Registrarse</button>
             </form>
         </div>
     );

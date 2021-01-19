@@ -21,10 +21,6 @@
     justify-content: space-around;
 }
 
-.label-register {
-    /* margin-left: 20px; */
-}
-
 .input-register {
     height: 2.5rem;
     width: 20rem;
@@ -45,23 +41,38 @@
     border: 1px solid black;
 }
 
-.tipo_cuenta {
+.acount-type {
     display: flex;
+    justify-content: space-around;
     width: 100%;
+    align-items: center;
+    margin-left: 1.5rem;
 }
 
-button {
+.input-rol {
+    margin-top: 1rem;
+}
+
+.label-acount-type {
+    width: 33%;
+}
+
+.register-button {
     justify-content: center;
     display: flex;
-    margin-top: 14px;
+    margin-top: 20px;
     height: 4rem;
     width: 20rem;
     border: 2px solid gray;
     border-radius: 8px;
     text-align: center;
-    background-color: #36A420;
+    background-color: #6e4610;
     color: white;
     font-size: 1.2rem;
     align-items: center;
+}
+
+.register-button:hover {
+    cursor: pointer;
 }
 

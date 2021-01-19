@@ -11,7 +11,7 @@ function Header() {
         <header className="Header">
             <div className="first-row">
                 <Link to="/">Logo</Link> 
-                <h1 className="titulo">Titulo
+                <h1 className="titulo">Golden Boy
                     <div>Enséñale al mundo tus habilidades</div>
                 </h1>
                 {me ?

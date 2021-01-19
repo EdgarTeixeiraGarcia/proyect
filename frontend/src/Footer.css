@@ -2,6 +2,12 @@
     height: 8rem;
     background-color: rgb(104, 102, 102);
     display: flex;
+    position: sticky;
+    /* bottom: 0; */
+    /* position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0; */
 }
 
 .creator {
@@ -19,8 +25,4 @@
 label {
     /* margin-left: 1rem; */
     margin-top: 1rem;
-}
-
-.separator {
-    border-left: 10px solid white;
 }

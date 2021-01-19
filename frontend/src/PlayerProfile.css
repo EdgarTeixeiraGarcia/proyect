@@ -1,0 +1,68 @@
+.personal-data-player {
+    display: flex;
+    flex-direction: row;
+    /* border: 1px solid black; */
+    border-radius: 8px;
+    width: 60%;
+    margin-left: 80px;
+}
+.data-player {
+    display: flex;
+    flex-direction: column;
+    margin-top: 14px;
+    /* border: 1px solid black; */
+    border-radius: 8px;
+    width: 60%;
+    margin-left: 80px;
+}
+
+.photo {
+    width: 400px;
+    height: 400px;
+    margin-top: 14px;
+    margin-left: 14px;
+    /* border: 1px solid black; */
+    border-radius: 8px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.tecnical-data-player {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    margin-top: 14px;
+    margin-left: 80px;
+    border-radius: 8px;
+    width: 400px;
+}
+
+.data-skills-player {
+    display: flex;
+    flex-direction: column;
+    margin-top: 14px;
+    margin-left: 80px;
+    border: 1px solid black;
+    width: 400px;
+    border-radius: 8px;
+}
+
+.skill {
+    margin-top: 4px;
+}
+
+.videos {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.videos-tittle  {
+    margin-top: 14px;
+    font-size: 1.6rem;
+    border-bottom: 10px solid black;
+}
+
+.video {
+    margin-top: 14px;
+}

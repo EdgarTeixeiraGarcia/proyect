@@ -19,12 +19,10 @@ const UserProvider = ({ children }) => {
 }
 
 export const useUser = () => {
-    console.log('Recibiendo Usuario')
     return useContext(UserContext).me
 }
 
 export const useSetUser = () => {
-    console.log('Modificando Usuario')
     return useContext(UserContext).setMe
 }
 

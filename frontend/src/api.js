@@ -36,6 +36,16 @@ export const updateTecnicalData = async (token, height, dominant_leg, main_posit
     return data
 }
 
+export const updateAgency = async (token, agency) => {
+    const ret = await fetch('http://localhost:8080/api/manager/update', {
+        method: 'PUT',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'},
+        body: JSON.stringify({ token, agency })
+    })
+    const data = await ret.json()
+    return data
+}
+
 export const insertSkills = async (token, skill) => {
     const ret = await fetch('http://localhost:8080/api/player/insertskill', {
         method: 'POST',
@@ -71,6 +81,16 @@ export const meTecnicalData = async (token, id)  => {
     return data
 }
 
+export const meAgency = async (token, id)  => {
+
+    const ret = await fetch('http://localhost:8080/api/manager/agency', {
+        method: 'GET',
+        headers: { 'Authorization': 'Bearer ' + token},
+    })
+    const data = await ret.json()
+    return data
+}
+
 export const playerData = async (token, id)  => {
 
     const ret = await fetch('http://localhost:8080/api/users/playerProfile', {
@@ -96,17 +116,6 @@ export const mePersonalData = async (token, phone, perfil_photo)  => {
     const data = await ret.json()
     return data
 }
-
-
-
-// export const clubsList = async () => {
-
-//     const ret = await fetch('http://localhost:8080/api/clubs', {
-//         method: 'GET'
-//     })
-//     const data = await ret.json()
-//     return data
-// }
 
 export const meVideos = async (token) => {
     const ret = await fetch('http://localhost:8080/api/multimedia/meVideos', {

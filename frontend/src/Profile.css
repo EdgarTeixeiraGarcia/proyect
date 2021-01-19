@@ -1,33 +1,153 @@
 .profile {
     display: flex;
     flex-direction: column;
-    margin-left: 10%;
+    /* margin-left: 10%; */
 }
 
 .personal_data {
     display: flex;
-    flex-direction: column;
-    border: 1px solid black;
+    flex-direction: row;
+    /* border: 1px solid black; */
     border-radius: 8px;
-    width: 40%;
-    margin-left: 40%;
-}
-.ficha_tecnica {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    border: 1px solid black;
-    border-radius: 8px;
-    width: 40%;
-    margin-left: 40%;
+    width: 60%;
+    margin-left: 80px;
 }
 
 .photo {
-    width: 40px;
-    height: 40px;
+    width: 400px;
+    height: 400px;
     border: 1px solid black;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
+}
+
+.personal-data {
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    font-size: 1.2rem;
+    /* width: 40%; */
+}
+
+.personal-data-button {
+    justify-content: center;
+    display: flex;
+    margin-top: 20px;
+    height: 4rem;
+    width: 20rem;
+    border: 2px solid gray;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #6e4610;
+    color: white;
+    font-size: 1.2rem;
+    align-items: center;
+}
+
+.tecnical-data {
+    display: flex;
+
+}
+
+.ficha_tecnica {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    border: 1px solid black;
+    border-radius: 8px;
+    width: 40%;
+    margin-left: 80px;
+}
+
+.form-tecnical-data {
+    display: flex;
+    flex-direction: column;
+}
+
+.tecnical-data-button {
+    justify-content: center;
+    display: flex;
+    margin-top: 20px;
+    height: 4rem;
+    width: 20rem;
+    border: 2px solid gray;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #6e4610;
+    color: white;
+    font-size: 1.2rem;
+    align-items: center;
+}
+
+.skills {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    border: 1px solid black;
+    border-radius: 8px;
+    width: 370px;
+    margin-left: 10px;
+}
+
+.skills div {
+    margin-top: 10px;
+}
+
+.insert-skill {
+    margin-top: 14px;
+    margin-left: 80px;
+}
+
+.insert-skill-button {
+    justify-content: center;
+    display: flex;
+    margin-top: 20px;
+    height: 4rem;
+    width: 23rem;
+    border: 2px solid gray;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #6e4610;
+    color: white;
+    font-size: 1.2rem;
+    align-items: center;
+}
+
+.videos {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.videos-tittle  {
+    margin-top: 14px;
+    font-size: 1.6rem;
+    border-bottom: 10px solid black;
+}
+
+.video {
+    margin-top: 14px;
+}
+
+.upload-video {
+    margin-top: 20px;
+    margin-left: 14px;
+}
+
+.upload-video-button {
+    justify-content: center;
+    display: flex;
+    margin-top: 20px;
+    margin-left: 14px;
+    height: 4rem;
+    width: 23rem;
+    border: 2px solid gray;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #6e4610;
+    color: white;
+    font-size: 1.2rem;
+    align-items: center;
 }
 
 .hide {
@@ -37,4 +157,24 @@
 span {
     margin-top: 6px;
     
+}
+
+/* .delete {
+    margin-left: 70%;
+} */
+
+.delete-acount-button {
+    justify-content: center;
+    display: flex;
+    margin-top: 20px;
+    margin-left: 14px;
+    height: 4rem;
+    width: 23rem;
+    border: 2px solid gray;
+    border-radius: 8px;
+    text-align: center;
+    background-color: rgb(173, 22, 22);
+    color: white;
+    font-size: 1.2rem;
+    align-items: center;
 }

@@ -166,9 +166,17 @@ async function register(req, res) {
             
         }
 
-        const [ user ] = await database.pool.query('SELECT u.*,c.country FROM users u JOIN countries c ON u.country = c.id WHERE u.email = ?', email)
+        // const [ user ] = await database.pool.query('SELECT u.*,c.country FROM users u JOIN countries c ON u.country = c.id WHERE u.email = ?', email)
+
+        const [ rows ] = await database.pool.query(`
+        SELECT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+        FROM users u JOIN countries c ON u.country = c.id 
+        WHERE u.email = ?`, email);
+
+        const user = rows [0];
 
         const tokenPayload = { id: user.id, rol: user.rol};
+        
 
         const token = jwt.sign(
             tokenPayload,
@@ -183,7 +191,7 @@ async function register(req, res) {
           from: 'edgar_wiman5@hotmail.com', // Change to your verified sender
           subject: 'Bienvenid@',
           text: 'Bienvenid@',
-          html: '<strong>Te damos la Bienvenida, Enséñanos tus habilidades</strong>',
+          html: '<strong>Te damos la Bienvenida a Golden Boy, Enséñanos tus habilidades</strong>',
         }
         sgMail
           .send(msg)
@@ -198,7 +206,7 @@ async function register(req, res) {
         res.status(201);
         res.send ({ 
             token,
-            user: { ...user[0]}
+            user: { ...user}
          });
 
     } catch (err) {
@@ -306,11 +314,7 @@ async function updateUser(req, res) {
 
         }
 
-        console.log(id, phone, imageName )
-
         const [ userUpdated ] =  await database.pool.query('SELECT * FROM users WHERE id = ?', id)
-        
-       
 
         res.status(200);
         res.send(userUpdated[0]);
