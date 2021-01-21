@@ -1,6 +1,7 @@
 import { useState, useEffect, Fragment, useCallback, useRef } from 'react';
 import { useSetUser, useUser } from './UserContext';
 import './Profile.css';
+import { Link, useHistory } from 'react-router-dom';
 import { mePersonalData, meVideos, meTecnicalData, meAgency, updateTecnicalData, updateAgency, useClubsList, insertSkills, useSkillsList, meSkills, uploadVideo, deleteUser } from './api';
 
 import { act } from 'react-dom/test-utils';
@@ -12,12 +13,13 @@ function Profile() {
     const theInput = useRef();
     console.log(me);
     const setMe = useSetUser()
+    const history = useHistory()
 
     const clubs = useClubsList()
     const skills = useSkillsList()
-    const mainPositions = ['portero','lateral_derecho','defensa_central','lateral_izquierdo',
-    'centrocampista_defensivo','medio_izquierdo','medio_derecho','centrocampista_ofensivo',
-    'extremo_izquierdo','extremo_derecho','segundo_delantero','delantero_centro']
+    const mainPositions = ['Portero','Lateral derecho','Defensa central','Lateral izquierdo',
+    'Centrocampista defensivo','Medio izquierdo','Medio derecho','Centrocampista ofensivo',
+    'Extremo izquierdo','Extremo derecho','Segundo delantero','Delantero centro']
 
     const [videos, setVideos ] = useState([])
     const [playerSkills, setPlayerSkills] = useState([])
@@ -25,6 +27,16 @@ function Profile() {
     const [preview, setPreview ] = useState(me.perfil_photo)
 
     const [ phone, setPhone ] = useState(me.phone || "")
+
+    const [ birthdate, setBirthdate ] = useState(() => {
+        const fecha = new Date(me.birthdate)
+        if (fecha) {
+            return `${fecha.getUTCDate()}/${fecha.getUTCMonth()+1}/${fecha.getUTCFullYear()}`;
+        }
+        return me.birthdate;
+    })
+
+
 
     const [ height, setHeight ] = useState(data.height || "")
     const [ dominantLeg, setDominantLeg ] = useState(data.dominant_leg || "")
@@ -83,6 +95,13 @@ function Profile() {
         meVideos(token).then((multimedia) => setVideos(multimedia))
     },[content])
 
+    const deleteMe = useCallback(() => {
+        deleteUser(token);
+        setMe();
+        history.push('/');
+
+    }, [deleteUser, token, setMe, history]);
+
 
     useEffect(() => {
           meVideos(token).then((multimedia) => setVideos(multimedia))
@@ -118,55 +137,67 @@ function Profile() {
     return (
         
         <div className="profile">
-            <h2>Mi Perfil</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="personal_data">
+            <Link to="/" className="inicio">Inicio</Link>
+            <span className="myProfile">Mi Perfil</span>
+            <form onSubmit={handleSubmit} className="form-profile">
+                <div className="profile-data">
                     <div className="value">
                         <div className="photo" style={style} value={preview} onClick={handleClick}></div>
                         <input className="hide" name="image" type="file" accept="image/*" onChange={handlePicture} ref={theInput}></input>
                     </div>
-                    <div className="personal-data">Datos Personales
-                        <label>Nombre:
-                            <span>{me.name}</span>
-                        </label>
-                        <label>Apellidos:
-                            <span>{me.last_name}</span>
-                        </label>
-                        <label>NIF:
-                            <span>{me.nif}</span>
-                        </label>
-                        <label>Email:
-                            <span>{me.email}</span>
-                        </label>
-                        <label>Fecha de Nacimiento:
-                            <span>{me.birthdate}</span>
-                        </label>
-                        <label>Edad:
-                            <span>{me.age}</span>
-                        </label>
-                        <label>Teléfono:
-                            <input value={phone} onChange={e => setPhone(e.target.value)}></input>
-                        </label>
-                        <label>País:
-                            <span>{me.country}</span>
-                        </label>
-                        <button className="personal-data-button">Actualizar datos personales</button>
+                    <div className="profile-data-container">
+                        <div className="personal-data">
+                            <span className="personal-data-title">DATOS PERSONALES:</span>
+                            <div className="personal-data-container">
+                                <label className="label-personal-data">Nombre:
+                                    <span className="span-player-personal-data">{me.name}</span>
+                                </label>
+                                <label className="label-personal-data">Apellidos:
+                                    <span className="span-player-personal-data">{me.last_name}</span>
+                                </label>
+                                <label className="label-personal-data">NIF:
+                                    <span className="span-player-personal-data">{me.nif}</span>
+                                </label>
+                                <label className="label-personal-data">Fecha de Nacimiento:
+                                    <span className="span-player-personal-data">{birthdate}</span>
+                                </label>
+                                <label className="label-personal-data">Edad:
+                                    <span className="span-player-personal-data">{me.age}</span>
+                                </label>
+                                <label className="label-personal-data">País:
+                                    <span className="span-player-personal-data">{me.country}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div className="contact-data">
+                            <span className="personal-data-title">DATOS CONTACTO:</span>
+                            <div className="contact-data-container">
+                                <label className="label-personal-data">Email:
+                                    <span className="span-player-personal-data">{me.email}</span>
+                                </label>
+                                <label className="label-personal-data">Teléfono:
+                                    <input value={phone} onChange={e => setPhone(e.target.value)}></input>
+                                </label>
+                            </div>
+                        </div>
+                        <button className="personal-data-button">ACTUALIZAR FICHA</button>
                     </div>
                 </div>
             </form>
             {me.rol==='player' ? (
             <Fragment>
                 <div className="tecnical-data">
-                    <div className="ficha_tecnica">Ficha Técnica
+                    <div className="ficha-tecnica">
+                        <span className="personal-data-title">FICHA TÉCNICA</span>
                         <form className="form-tecnical-data" onSubmit={handleTecnicalData}>
-                            <label>Altura:
-                                <input value={height} onChange={e => setHeight(e.target.value)}></input>
-                                <span>cm</span>
-                            </label>
-                            <label>Pierna dominante:
-                                <input value={dominantLeg} onChange={e => setDominantLeg(e.target.value)}></input>
-                            </label>
-                            <label>Posición principal:
+                            <span className="span-personal-data">Altura:</span>
+                            <div>
+                                <input value={height} onChange={e => setHeight(e.target.value)} className="input-tecnical-data"></input>
+                                <span className="text-personal-data"> cm</span>
+                            </div>
+                            <span className="span-personal-data">Pierna dominante:</span>
+                            <input value={dominantLeg} onChange={e => setDominantLeg(e.target.value)} className="input-tecnical-data"></input>
+                            <span className="span-personal-data">Posición principal:</span> 
                                 {/* <input value={mainPosition} onChange={e => setMainPosition(e.target.value)}></input> */}
                                 <select className="countries-list" name="main-position" value={mainPosition} onChange={e => setMainPosition(e.target.value)}>
                                 {mainPositions && mainPositions.map(position => 
@@ -175,8 +206,8 @@ function Profile() {
                                     </option>
                                 )}
                                 </select>
-                            </label>     
-                            <label>Posición secundaria:
+                                
+                            <span className="span-personal-data">Posición secundaria:</span>
                                 {/* <input value={secundaryPosition} onChange={e => setSecundaryPosition(e.target.value)}></input> */}
                                 <select className="countries-list" name="secundary-position" value={secundaryPosition} onChange={e => setSecundaryPosition(e.target.value)}>
                                 {mainPositions && mainPositions.map(position => 
@@ -185,17 +216,15 @@ function Profile() {
                                     </option>
                                 )}
                                 </select>
-                            </label>
-                            <label>Propiedad de:
+                            <span className="span-personal-data">Propiedad de:</span>
                                 <select className="countries-list" name="club" value={propertyOf} onChange={e => setPropertyOf(e.target.value)}>
                                 {clubs && clubs.map(club => 
                                     <option key={club.id} value={club.id}>
                                         {club.club_name}
                                     </option>
                                 )}
-                                </select>
-                            </label>
-                            <label>Equipo actual:
+                                </select>  
+                            <span className="span-personal-data">Equipo actual:</span>
                                 <select className="countries-list" name="club" value={actualTeam} onChange={e => setActualTeam(e.target.value)}>
                                 {clubs && clubs.map(club => 
                                     <option key={club.id} value={club.id}>
@@ -203,20 +232,18 @@ function Profile() {
                                     </option>
                                 )}
                                 </select>
-                            </label>
-                            <button className="tecnical-data-button" type="submit">Actual datos Tecnicos</button>
+                            <button className="tecnical-data-button" type="submit">ACTUALIZAR DATOS TÉCNICOS</button>
                         </form>
                 
                     </div>
-                    <div className="skills">Habilidades
+                    <div className="skills">
+                        <span className="personal-data-title">HABILIDADES</span>
                         {playerSkills && playerSkills.map((playerSkill)=> 
-                            <div key={playerSkill.id}>
-                                <span>{playerSkill.skill}</span>
-                            </div>
+                                <span className="text-personal-data" key={playerSkill.id}>{playerSkill.skill}</span>   
                         )}
-                        <form onSubmit={handleSkills}>
-                            <label className="insert-skill">Añadir Skill
-                                <select className="insert-skill" name="skill" value={skill} onChange={e => setSkill(e.target.value)}>
+                        <form onSubmit={handleSkills} className="form-tecnical-data">
+                            <span className="insert-skill">NUEVA HABILIDAD:</span>
+                                <select className="countries-list" name="skill" value={skill} onChange={e => setSkill(e.target.value)}>
                                     {skills && skills.map(skill =>{
                                         if(playerSkills.filter((playerSkill)=> playerSkill.id === skill.id).length === 0){
                                             return (
@@ -227,48 +254,56 @@ function Profile() {
                                         } 
                                     })}       
                                 </select>            
-                            </label>
-                            <button className="insert-skill-button" type="submit">Insertar Skill</button>
+                            <button className="insert-skill-button" type="submit">INSERTAR HABILIDAD</button>
                         </form>
                     </div>
                 </div>
                 <div className="videos">
-                    <span className="videos-tittle">Vídeos</span>
+                    <span className="videos-tittle">VÍDEOS</span>
                     <div className="video">
                         {videos && videos.map((video)=> 
-                                <span key={video.id}>
+                                <div className="videos-url" key={video.id}>
                                 <iframe width="560" height="315" src={video.content.replace("watch?v=", "embed/")} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-                                </span>
+                                </div>
                         )}
                     </div>
                     <form onSubmit={handleVideos}>
                         <label className="upload-video">Link de Youtube:
-                            <input value={content} onChange={e => setContent(e.target.value)}></input>
+                            <input  className="input-video" value={content} onChange={e => setContent(e.target.value)}></input>
                         </label>
-                        <button className="upload-video-button" type="submit">Publicar Video</button>
-                </form>
+                        <button className="upload-video-button" type="submit">PUBLICAR VÍDEO</button>
+                    </form>
                 </div>
             </Fragment>
            
             ): (
                 <Fragment>
-                    <div className="agency">Agencia
+                    <div className="agency">
+                        <span className="personal-data-title">AGENCIA:</span>
+                        <form onSubmit={handleAgency} className="form-tecnical-data">
+                            <label>Nombre:
+                                <input value={agency} onChange={e => setAgency(e.target.value)}></input>
+                            </label>  
+                            <button className="insert-skill-button" type="submit">ACTUALIZAR</button>
+                        </form>
+                    </div>
+                    {/* <div className="agency">Agencia
                         <form onSubmit={handleAgency}>
                             <label>Nombre:
                                 <input value={agency} onChange={e => setAgency(e.target.value)}></input>
                             </label>
                             <button className="agency-button" type="submit">Actualizar</button>
                         </form>
-                    </div> 
+                    </div>  */}
                 </Fragment>
             )}
             <div className="delete">
-                <button className="delete-acount-button">Eliminar Cuenta</button>
+                <button className="delete-acount-button" onClick={deleteMe}>ELIMINAR CUENTA</button>
             </div> 
+            <div className="welcome-image"></div>
         </div>
     );
 }
-
 
 
 export default Profile;

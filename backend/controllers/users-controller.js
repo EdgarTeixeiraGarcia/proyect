@@ -314,7 +314,13 @@ async function updateUser(req, res) {
 
         }
 
-        const [ userUpdated ] =  await database.pool.query('SELECT * FROM users WHERE id = ?', id)
+        const [ userUpdated ] = await database.pool.query(`
+        SELECT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+        FROM users u JOIN countries c ON u.country = c.id 
+        WHERE u.id = ?`, id);
+
+
+        // const [ userUpdated ] =  await database.pool.query('SELECT * FROM users WHERE id = ?', id)
 
         res.status(200);
         res.send(userUpdated[0]);
@@ -393,8 +399,6 @@ async function getUserData (req, res) {
         
         const  id  = req.query.id;
 
-        console.log(id)
-
         const [playerData] = await database.pool.query(`
         SELECT u.*,p.*,c.country,cl_actual.*,cl_propiedad.*,s.skill,mc.*,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age
         FROM users u 
@@ -407,11 +411,12 @@ async function getUserData (req, res) {
         LEFT JOIN multimedia_contents mc ON p.id = mc.id_player
         WHERE p.id_user = ?`, id)
 
-        const [nameActualTeam] = await database.pool.query(`
-        SELECT club_name from clubs WHERE id = ?`,playerData[0].actual_team)
+        const [nameActualTeam] = playerData[0].actual_team ? await database.pool.query(`
+        SELECT club_name from clubs WHERE id = ?`,playerData[0].actual_team) : [[{nameActualTeam: {club_name: null}}]]
+        console.log()
 
-        const [namePropertyOf] = await database.pool.query(`
-        SELECT club_name from clubs WHERE id = ?`,playerData[0].property_of)
+        const [namePropertyOf] = playerData[0].property_of ? await database.pool.query(`
+        SELECT club_name from clubs WHERE id = ?`,playerData[0].property_of) : [[{namePropertyOf: {club_name: null}}]]
 
         let skills = []
         let videos = []

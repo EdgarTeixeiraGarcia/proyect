@@ -1,4 +1,4 @@
-html, #root{
+/* html, #root{
     height: 100%;
     width: 100%;
   }
@@ -16,104 +16,205 @@ html, #root{
     flex-direction: column;
     height: 100%;
     width: 100%;
-  }
-  
-  .header {
-    height: 8rem;
-  }
+  } */
   
   .body {
     display: flex;
     flex-direction: row;
-    background-color: rgb(202, 199, 199);
-    background-position: center;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    flex-grow: 1;
-    flex-direction: row;
+    flex-direction: column;
+    background: white;
+    overflow: auto;
   }
 
   .filter {
     display: flex;
+    flex: 1;
   }
   
   .filter-aside{
-    border-left: 4px solid black;
-    border-right: 4px solid black;
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    width: 30%;
-    height: 100%;
-    background-color:rgb(255, 255, 255, 0.2);
+    width: 264px;
+    height: 596px;
+    margin-left: 20px;
+    margin-top: 34px;
+    background-color: #F3F3F3;
+    padding: 16px;
+    overflow: auto;
+    
   }
   
-  h3 {
-    text-align: center;
-    width: 100%;
+  .filter-title {
+    font-family: "Raleway";
+    display: flex;
+    font-weight: 700px;
+    font-size: 18px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #444444;
+    padding-left: 12px;
+
   }
   
   .filter-data {
     display: flex;
     flex-direction: column;
+    padding-left: 12px;
+
+    
   }
+
+  .filter-data a {
+    text-decoration-line: none;
   
-  .filter_name {
+  }
+
+  .filter-results {
+    text-decoration-line: none;
+    color: black;
+    font-family: "Raleway";
     display: flex;
-    flex-direction: column;
-    margin-left: 2px;
-    border-bottom: 1px solid black;
-    width: 100%;
+    font-weight: 700px;
+    font-size: 18px;
+    margin-top: 1px;
   }
-  
-  span {
-    margin-left: 20px;
-    width: 100%;
+
+  .filter-results:hover {
+    text-decoration: none;
+    color: black;
+    font-weight: bold; 
+  }
+
+
+  .filter-name {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    justify-content: center;
+    /* margin-left: 2px; */
+    font-family: "Raleway";
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 10px; 
+    padding-bottom: 9px;
+    border-bottom: 1px solid #444444;
+    cursor: pointer;
+    padding-left: 12px;
+  }
+
+  .filter-name-title {
+    flex: 1;
+  }
+
+  .filter-name-icon {
+    font-size: 20px;
   }
   
   
   .welcome {
-    background-color: rgb(202, 199, 199);
-    color: black;
-    width: 100%;
+    background-color: #FAFAFA;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    height: 20%;
-    margin-top: 14px;
+    margin-top: 34px;
+    margin-left: 34px;
+    flex: 1;
+    position: relative;
+  }
+  .filter-results-player {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+
+  .filter-results-player a {
+  
   }
   
   .welcome-body {
-    font-size: 4rem;
-  }
+    display: flex;
+    flex-direction: column;
+    margin-top: 120px;
+    width: 778px;
+    height: 132px;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 25px;
+    letter-spacing: 0.2em;
+    color: #6D6D6D;
+    margin-left: 30px;
+      }
   
   .welcome a {
-    border: 1px solid black;
-    margin-top: 14px;
-    margin-left: 150px;
-    border-radius: 8px;
+    /* border: 1px solid black; */
+    /* border-radius: 8px; */
+    height: 200px;
+    display: flex;
+    margin-left: 30px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    text-decoration: none;
+  }
+
+  .welcome a:hover {
+    text-decoration: none;
+    color: black;
+    font-weight: bold; 
+  }
+  .welcome-title {
+    font-family: "Raleway";
+    font-weight: 700px;
+    font-size: 25px;
+  }
+
+  .welcome-description {
+    font-family: "Raleway";
+    font-weight: 700px;
+    font-size: 30px;
+    margin-top: 15px;
+  }
+
+  .welcome-image {
+    background-image: url('./images/image-portada.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    right: 0;
+    bottom: 0px;
+    width: 590px;
+    height: 545px;
+    opacity: 0.2;
   }
   
   .filter-player {
     display: flex;
     /* background-color: teal; */
-    margin: 14px;
     flex-direction: row;
     flex-wrap: wrap;
-    /* width: 50%; */
-    border-radius: 8px;
+    width: 250px;
+    z-index: 1;
+        align-self: center;
+    /* border-radius: 8px; */
+    ;
   }
   
   .photo-filter {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 120px;
     background-size: cover;
     background-repeat: no-repeat;
-    border-radius: 8px;
+    align-self: center;
+    /* border-radius: 8px; */
+  }
+
+  .filter-player-data {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    justify-content: space-evenly;
+    color: black;
+
   }
   
-  .footer {
-    position: relative;
-  }

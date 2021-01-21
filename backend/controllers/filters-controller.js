@@ -7,14 +7,38 @@ async function filterByClub (req, res) {
 
         const [ clubs ] = await database.pool.query('SELECT id FROM clubs WHERE club_name = ?', club_name);
 
-        const [ players ] = await database.pool.query('SELECT * FROM players WHERE actual_team = ?', [clubs[0].id])
+        const [ players ] = await database.pool.query(`
+        SELECT DISTINCT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+        FROM users u 
+        LEFT JOIN countries c ON u.country = c.id
+        LEFT JOIN players p ON u.id = p.id_user
+        LEFT JOIN clubs cb ON cb.id = p.actual_team
+        LEFT JOIN players_skills ps ON p.id = ps.id_player
+        LEFT JOIN skills s ON ps.id_skill = s.id
+        WHERE cb.id = ?`, [clubs[0].id])
 
-        const [ users ] = await database.pool.query('SELECT u.*, c.country FROM users u LEFT JOIN countries c ON u.country = c.id WHERE u.id = ?', [players[0].id_user])
+        // const [ users ] = await database.pool.query(`
+        // SELECT DISTINCT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+        // FROM users u 
+        // LEFT JOIN countries c ON u.country = c.id
+        // LEFT JOIN players p ON u.id = p.id_user
+        // LEFT JOIN clubs cb ON cb.id = p.actual_team
+        // LEFT JOIN players_skills ps ON p.id = ps.id_player
+        // LEFT JOIN skills s ON ps.id_skill = s.id
+        // WHERE u.id = ?`, [players.id_user])
 
-        console.log(club_name)
- 
+        // const [players] = await database.pool.query(`
+        // SELECT DISTINCT u.*,c.country,TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) as age 
+        // FROM users u 
+        // LEFT JOIN countries c ON u.country = c.id
+        // LEFT JOIN players p ON u.id = p.id_user
+        // LEFT JOIN clubs cb ON cb.id = p.actual_team
+        // LEFT JOIN players_skills ps ON p.id = ps.id_player
+        // LEFT JOIN skills s ON ps.id_skill = s.id
+        // WHERE cb.club_name = ?`, club_name)
+
         res.status(200);
-        res.send(users);
+        res.send(players);
 
     } catch (err) {
 
@@ -87,7 +111,7 @@ async function filterByPosition (req, res) {
             FROM users u 
             LEFT JOIN countries c ON u.country = c.id
             LEFT JOIN players p On u.id = p.id_user
-            WHERE main_position = "lateral_derecho" OR main_position = "defensa_central" OR main_position = "lateral_izquierdo"`)
+            WHERE main_position = "Lateral derecho" OR main_position = "Defensa central" OR main_position = "Lateral izquierdo"`)
 
             res.status(200);
             res.send(players);
@@ -100,7 +124,7 @@ async function filterByPosition (req, res) {
             FROM users u 
             LEFT JOIN countries c ON u.country = c.id
             LEFT JOIN players p On u.id = p.id_user
-            WHERE main_position = "centrocampista_defensivo" OR main_position = "medio_izquierdo" OR main_position = "medio_derecho" OR main_position = "centrocampista_ofensivo"`)
+            WHERE main_position = "Centrocampista defensivo" OR main_position = "Medio izquierdo" OR main_position = "Medio derecho" OR main_position = "Centrocampista ofensivo"`)
 
             res.status(200);
             res.send(players);
@@ -113,7 +137,7 @@ async function filterByPosition (req, res) {
             FROM users u 
             LEFT JOIN countries c ON u.country = c.id
             LEFT JOIN players p On u.id = p.id_user
-            WHERE main_position = "extremo_izquierdo" OR main_position = "extremo_derecho" OR main_position = "segundo_delantero" OR main_position = "delantero_centro"`)
+            WHERE main_position = "Extremo izquierdo" OR main_position = "Extremo derecho" OR main_position = "Segundo delantero" OR main_position = "Delantero centro"`)
 
             res.status(200);
             res.send(players);

@@ -17,6 +17,7 @@
     background-color:rgb(255, 255, 255, 0.2);
     border: 1px solid black;
     border-radius: 8px;
+    background-color: #F1EFEF;
 
 }
 
@@ -31,18 +32,19 @@
 }
 
 .iniciar_sesion {
-    justify-content: center;
-    display: flex;
+    width: 312px;
+    height: 54px;
+    background: #FFD18B;
+    border-radius: 27px;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 0.2em;
+    color: #444444;
+    margin-left: 20px;
     margin-top: 14px;
-    height: 4rem;
-    width: 20rem;
-    border: 2px solid gray;
-    border-radius: 8px;
-    text-align: center;
-    background-color: #084d9c;
-    color: white;
-    font-size: 1.2rem;
-    align-items: center;
+    cursor: pointer;
 }
 
 .separator {
@@ -52,18 +54,14 @@
     margin-top: 14px;
 }
 .nueva_cuenta {
-    justify-content: center;
-    display: flex;
+    height: 54px;
+    border-radius: 27px;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 0.2em;
+    color: #444444;
+    margin-left: 20px;
     margin-top: 14px;
-    margin-bottom: 14px;
-    height: 4rem;
-    width: 14rem;
-    border: 2px solid gray;
-    border-radius: 8px;
-    text-align: center;
-    text-decoration: none;
-    background-color: #36A420;
-    color: white;
-    font-size: 1.2rem;
-    align-items: center;
 }

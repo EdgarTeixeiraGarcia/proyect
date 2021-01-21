@@ -175,3 +175,13 @@ export const playerProfile = async (id) => {
     return data
 }
 
+export const contract = async (token, id_player) => {
+    const ret = await fetch('http://localhost:8080/api/manager/contract', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify({ token, id_player})
+    })
+    const data = await ret.json()
+    return data
+}
+

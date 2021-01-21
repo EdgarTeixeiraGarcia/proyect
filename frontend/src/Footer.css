@@ -1,28 +1,28 @@
 .Footer {
-    height: 8rem;
-    background-color: rgb(104, 102, 102);
+   display: flex;
+   flex-direction: row;
+   width: 100%;
+   height: 42px;
+   background: #FFD18B;
+   justify-content: center;
+   align-items: center;
+   
+}
+
+.category-title {
+    font-weight:bold;
+    margin-left: 10px;
+}
+.category-title,
+.category-text {
+    font-family: Raleway;
+    font-style: normal;
     display: flex;
-    position: sticky;
-    /* bottom: 0; */
-    /* position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0; */
+    font-size: 15px;
+    width: fit-content;
 }
 
-.creator {
-    flex-grow: 1;
+.category-text {
+    margin-left: 4px;
 }
 
-.contact {
-    display: flex;
-    flex-direction: column;
-    margin-right: 10rem;
-    margin-top: 1rem;
-    margin-left: 1rem;
-}
-
-label {
-    /* margin-left: 1rem; */
-    margin-top: 1rem;
-}

@@ -1,6 +1,6 @@
 import { useSetUser, useUser } from './UserContext'
 import './Header.css';
-import { Link, useHistory} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Header() {
 
@@ -9,18 +9,15 @@ function Header() {
 
     return (
         <header className="Header">
-            <div className="first-row">
-                <Link to="/">Logo</Link> 
-                <h1 className="titulo">Golden Boy
-                    <div>Enséñale al mundo tus habilidades</div>
-                </h1>
+            <div className="logo"><span className="logo-name">GOLDEN BOY</span></div>
+            {/* <div className="first-row"> */}
                 {me ?
-                    <div className="user">
-                        <Link to="/profile" className="login_header">{me.user.name}</Link>
-                        <Link to="/" onClick={() => setMe()}>Cerrar Sesión</Link>
-                    </div> : <Link to="/login" className="login_header" >Entrar</Link>
+                    <div className="user"> 
+                        <Link to="/profile" className="name-login">{me.user.name}</Link>
+                        <Link to="/" className="login-header" onClick={() => setMe()}><span className="text-login">LOGOUT</span></Link>
+                    </div> : <div className="user"><Link to="/login" className="login-header"><span className="text-login">LOGIN</span></Link></div>
                 } 
-            </div>
+            {/* </div> */}
         </header>
     )
 

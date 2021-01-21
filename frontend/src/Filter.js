@@ -8,7 +8,7 @@ function Filter() {
 
   const me = useUser()
 
-  const ages = [14,15,16,17,18,19,20,21,22,23,24,25]
+  const ages = [17,18,19,20,21,22,23,24]
   const positions = ['Portero', 'Defensa', 'Centrocampista', 'Delantero']
   
   const clubs = useClubsList()
@@ -46,9 +46,11 @@ function Filter() {
     return (
         <div className="filter">
             <aside className="filter-aside">
-              <h3>Filtros</h3>
-              <h4 className="filter_name" onClick={() => setShowClubs(!showClubs)}>CLUB
-              {showClubs ? 'Ocultar' : 'Mostrar'}</h4>
+              <span className="filter-title">Filtros:</span>
+              <div className="filter-name">
+                <span className="filter-name-title" onClick={() => setShowClubs(!showClubs)}>CLUB</span>
+                <span className="filter-name-icon">{showClubs ? '↑' : '↓'}</span>
+              </div>
               {showClubs &&
               <div className="filter-data">
                  {clubs && clubs.map(club => 
@@ -57,36 +59,42 @@ function Filter() {
                   </Link>
                 )}
               </div>
-              }  
-              <h4 className="filter_name" onClick={() => setShowSkills(!showSkills)}>HABILIDADES
-              {showSkills ? 'Ocultar' : 'Mostrar'}</h4>
+              }
+              <div className="filter-name">
+                <span className="filter-name-title" onClick={() => setShowSkills(!showSkills)}>HABILIDADES</span>
+                <span className="filter-name-icon">{showSkills ? '↑' : '↓'}</span>
+              </div>  
               {showSkills && 
               <div className="filter-data">
                 {skills && skills.map(skill => 
                       <Link to={`/?skill=${skill.skill}`} key={skill.id}>
-                        <span>{skill.skill}</span>
+                        <span className="filter-results">{skill.skill}</span>
                       </Link>
                   )}
               </div>
-              } 
-              <h4 className="filter_name" onClick={() => setShowAge(!showAge)}>EDAD
-              {showAge ? 'Ocultar' : 'Mostrar'}</h4>
+              }
+              <div className="filter-name">
+                <span className="filter-name-title" onClick={() => setShowAge(!showAge)}>EDAD</span>
+                <span className="filter-name-icon">{showAge ? '↑' : '↓'}</span>
+              </div> 
               {showAge &&
               <div className="filter-data">
                 {ages && ages.map(age => 
                     <Link to={`/?age=${age}`} key={age}>
-                      <span>{age}</span>
+                      <span className="filter-results">{age}</span>
                     </Link>
                 )}
               </div>
               }
-              <h4 className="filter_name" onClick={() => setShowPosition(!showPosition)}>POSICION
-              {showPosition ? 'Ocultar' : 'Mostrar'}</h4>
+              <div className="filter-name">
+                <span className="filter-name-title" onClick={() => setShowPosition(!showPosition)}>POSICIÓN</span>
+                <span className="filter-name-icon">{showPosition ? '↑' : '↓'}</span>
+              </div>
               {showPosition &&
               <div className="filter-data">
                 {positions && positions.map(position => 
                     <Link to={`/?position=${position}`} key={position}>
-                      <span>{position}</span>
+                      <span className="filter-results">{position}</span>
                     </Link>
                 )}
               </div>
@@ -94,16 +102,27 @@ function Filter() {
               </aside>
               <div className="welcome">
                 {data?.length > 0 ? 
-                  (data.map(player => (<Link to={`/playerProfile?id=${player.id}`} key={player.id}>
-                    <div className="filter-player">
-                      <div className="photo-filter" style={{ backgroundImage: 'url(' + player.perfil_photo + ')' }}></div>
-                      <div className="filter-data">
-                        <span>{player.name}</span>
-                        <span>{player.age}</span>
-                        <span>{player.country}</span>
-                      </div>
-                    </div></Link>))):(<span className="welcome-body">Bienvenidos, únete a nosotros y conviértete en la próxima estrella mundial</span>)
+                  (<div className="filter-results-player">
+                    {data.map(player => (
+                      <Link to={`/playerProfile?id=${player.id}`} key={player.id}>
+                        <div className="filter-player">
+                          <div className="photo-filter" style={{ backgroundImage: 'url(' + player.perfil_photo + ')' }}></div>
+                          <div className="filter-player-data">
+                            <span>{player.name}</span>
+                            <span>{player.age} años</span>
+                            <span>{player.country}</span>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>) 
+                :
+                  (<div className="welcome-body">
+                    <span className="welcome-title">¡Bienvenidx!</span>
+                    <span className="welcome-description">Regístrate y conviértete en la próxima estrella mundial</span>
+                  </div>)
                 }
+                  <div className="welcome-image"></div>
               </div>
         </div>
     )

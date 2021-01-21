@@ -54,6 +54,7 @@ app.get('/api/player/meSkills', validateAuthorization, playersController.getMeSk
 
 app.get('/api/manager/agency', validateAuthorization, managersController.getAgencyManager)
 app.put('/api/manager/update', validateAuthorization, managersController.updateManager)
+app.post('/api/manager/contract', validateAuthorization, managersController.contractManager)
 
 // Skills
 app.get('/api/skills', skillsController.getSkills)

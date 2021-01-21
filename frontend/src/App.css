@@ -1,4 +1,4 @@
-/* html, #root{
+html, #root{
   height: 100%;
   width: 100%;
 }
@@ -8,7 +8,6 @@ body {
   flex-grow: 1;
   height: 100%;
   width: 100%;
-  margin-bottom: 100px;
 }
 
 .App {
@@ -17,7 +16,7 @@ body {
   height: 100%;
   width: 100%;
 }
-
+/* 
 .header {
   height: 8rem;
 }

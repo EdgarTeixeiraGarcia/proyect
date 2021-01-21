@@ -4,15 +4,10 @@ function Footer() {
 
     return (
         <footer className="Footer">
-            <div className="creator">Creado por Edgar Teixeira García</div>
-            <div className="contact">CONTACTO
-                <label>Email:
-                    <span>edgar.teixeira.garcia@gmail.com</span>
-                </label>
-                <label>LinkedIn:
-                    <span>www.linkedin.com/in/edgar-teixeira-garcía</span>
-                </label>
-            </div>
+                <span className="category-title">Email:</span>
+                <span className="category-text">edgar.teixeira.garcia@gmail.com</span>
+                <span className="category-title">LinkedIn:</span>
+                <span className="category-text">www.linkedin.com/in/edgar-teixeira-garcía</span>
         </footer>
     )
 

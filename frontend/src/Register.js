@@ -66,7 +66,7 @@ function Register() {
                 <label className="label-register">Repite la contraseña
                     <input type="password" className="input-register" value={repeatedPassword} onChange={e => setRepeatedPassword(e.target.value)} placeholder="Repite la contraseña"/>
                 </label>
-                <label className="acount-type">Tipo de cuenta:
+                <label className="label-register">Tipo de cuenta:
                     <input  type="radio" className="input-rol" value="player" name="rol" onClick={e => setRol(e.target.value)} />
                     <label for="player" className="label-acount-type">Futbolista</label>
                     <input  type="radio" className="input-rol" value="manager" name="rol" onClick={e => setRol(e.target.value)} />

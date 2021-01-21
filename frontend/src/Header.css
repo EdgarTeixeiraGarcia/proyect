@@ -1,47 +1,112 @@
+
 /* .Header {
-    background-color:white;
-    display: flex;
-    flex-direction: row;
-    height: 8rem;
-    align-items: center;
-}
-
-.logo {
-    background-color: teal;
-    text-align: center;
-}
-
-.title {
-    flex-grow: 1;
-} */
-
-.Header {
     background-color: rgb(104, 102, 102);
     color: white;
     text-align: center;
     height: 8rem;
+  } */
+
+  .Header {
+    position: relative;
+    width: 100%;
+    height: 90px;
+    left: 0px;
+    top: 0px;
+    background-color: #F1EFEF;
+  }
+
+  .logo {
+    position: absolute;
+    display: flex;
+    width: 264px;
+    height: 69px;
+    left: 20px;
+    top: 10px;
+    align-items: center;
+    justify-content: center;
+    background-color:#FFD18B;
+    
+  }
+
+  .logo-name {
+    
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 0.2em;
+    color: #6D6D6D;;
+  }
+
+  .user {
+    display: flex;
+    height: 100%;
+    width: auto;
+    position: absolute;
+    right: 0;
+  }
+
+  .login-header {
+    position: relative;
+    display: flex;
+    width: 207px;
+    height: 54px;
+    right: 18px;
+    top: 18px;
+    background-color: #FFD18B;
+    border-radius: 27px;
+    text-decoration: none;  
+  }
+
+  .name-login {
+    width: 78px;
+    height: 23px;
+    text-decoration: none;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 23px;
+    letter-spacing: 0.2em;
+    color: #444444;
+    margin: auto;
+    padding-right: 90px;
+  }
+
+  .text-login {
+    width: 78px;
+    height: 23px;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 23px;
+    letter-spacing: 0.2em;
+    color: #444444;
+    margin: auto;
+    padding-right: 18px;
   }
   
-  .Header .first-row {
+  /* .Header .first-row {
     display: flex;
     flex-direction: row;
     justify-content: center;
     height: 4rem;
-  }
+  } */
   
-  .Header div {
+  /* .Header div {
     padding: 4px 10px;
-  }
+  } */
 
-  .logo {
+  /* .logo {
       justify-content: flex-start;
   }
 
   .titulo {
     flex-grow: 1;
-  }
+  } */
 
-  .login_header {
+  /* .login_header {
     justify-content: center;
     display: flex;
     margin-top: 14px;
@@ -55,6 +120,6 @@
     color: white;
     font-size: 1.2rem;
     align-items: center;
-  }
+  } */
   
   
