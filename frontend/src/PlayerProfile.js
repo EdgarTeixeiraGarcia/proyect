@@ -6,7 +6,7 @@ import { playerProfile, contract } from './api';
 import { Link } from 'react-router-dom';
 
 
-function Profile() {
+function PlayerProfile() {
 
     const location = useLocation()
 
@@ -135,4 +135,4 @@ function Profile() {
 
 
 
-export default Profile;
+export default PlayerProfile;
